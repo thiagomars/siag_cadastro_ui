@@ -21,7 +21,7 @@ export default function ModalUf(props: Props) {
 
     const [id, setId] = useState(0);
     const [salvandoUf, setSalvandoUf] = useState<boolean>(false);
-    const { register: UfRegister, handleSubmit: UfSubmit, reset: UfReset, control: UfControl, getValues: UfGetValues } = useForm<ufCadastro>();
+    const { register: UfRegister, handleSubmit: UfSubmit, reset: UfReset } = useForm<ufCadastro>();
     const toast = useToastLoading();
     const [alteracoes, setAlteracoes] = useState<baseAlteracoes | null>();
 
@@ -47,7 +47,7 @@ export default function ModalUf(props: Props) {
 
         let dados: ufCadastro;
 
-        await UfSubmit((dadosForm) => dados = { ...dadosForm, id: id })();
+        await UfSubmit((dadosForm) => dados = { ...dadosForm })();
 
         const request = id > 0 ? () => putUf(dados) : () => postUfs(dados);
 
@@ -75,8 +75,8 @@ export default function ModalUf(props: Props) {
         setUfSelecionado(null);
         setId(0);
         UfReset({
-            descricao: "",
-            ativo: true
+            nm_nomeuf: "",
+            nm_uf: ""
         })
     }
 
@@ -123,8 +123,8 @@ export default function ModalUf(props: Props) {
         >
             <Formulario className="col-span-2 grid grid-cols-2">
                 <Formulario.InputTexto
-                    name="descricao"
-                    label="Descrição"
+                    name="nm_uf"
+                    label="UF"
                     type="text"
                     disabled={salvandoUf}
                     opcional={false}
@@ -132,28 +132,13 @@ export default function ModalUf(props: Props) {
                     register={UfRegister}
                 />
                 <Formulario.InputTexto
-                    name="sigla"
-                    label="Sigla"
+                    name="nm_nomeuf"
+                    label="Nome UF"
                     type="text"
                     disabled={salvandoUf}
                     opcional={false}
                     className="col-span-2 mb-2"
                     register={UfRegister}
-                />
-                <Formulario.InputNumber
-                    name="codigoIbge"
-                    label="Cod. IBGE"
-                    type="text"
-                    disabled={salvandoUf}
-                    opcional={false}
-                    className="col-span-2 mb-2"
-                    control={UfControl}
-                />
-                <Formulario.InputCheckBox
-                    name="ativo"
-                    control={UfControl}
-                    label="Ativo"
-                    defaultChecked={UfGetValues("ativo")}
                 />
 
             </Formulario>

@@ -1,39 +1,25 @@
 import { baseEntity, baseFiltros } from "./baseEntity.d";
-import { typeSelectOptions } from "./select.d";
 
 export type ufListagem = {
-    id: number;
-    
-    descricao: string;
-    ativo: boolean;
-    sigla: string;
-    codigoIbge: number;
+    nm_uf: string;
+    nm_nomeuf: string;
 
     dataUltimaAlteracao: Date;
     usuarioUltimaAlteracao: string;
 } & baseEntity;
 
 export type ufCadastro = {
-    id: number;
-    
-    descricao: string;
-    ativo: boolean;
-    sigla: string;
-    codigoIbge: number;
+    nm_uf: string;
+    nm_nomeuf: string;
 }
 
 export type ufForm = {
-    id: number;
-    
-    descricao: string;
-    ativo: boolean;
-    sigla: string;
-    codigoIbge: number;
+    nm_uf: string;
+    nm_nomeuf: string;
 }
 
 export type ufFiltrosListagem = {
     pesquisa?: string;
-    ativo?: typeSelectOptions;
 } & baseFiltros;
 
 export type ufFiltroSelect = {
