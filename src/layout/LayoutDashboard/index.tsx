@@ -28,6 +28,8 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { FaAngleDown } from 'react-icons/fa6';
 // import useToastLoading from '../../hooks/useToastLoading';
 import ModalAlterarSenha from './ModalAlterarSenha';
+import MenuItem from './MenuItem';
+import { ItemMenu } from '../../types/menu.d';
 
 // function useQuery() {
 //     const { search } = useLocation();
@@ -48,7 +50,7 @@ export default function LayoutDashboard(): JSX.Element {
     // const [usuario, setUsuario] = useState<usuarioListagem | null>(null)
     // const [menu, setMenu] = useState<Array<ItemMenuGrupo>>([])
     // const [menuPesquisa, setMenuPesquisa] = useState<Array<ItemMenuGrupo>>([])
-    // const [itensMenu, setItensMenu] = useState<Array<ItemMenu>>([])
+    const [itensMenu, setItensMenu] = useState<Array<ItemMenu>>([])
     // const [filtroPesquisa] = useState<string>("")
     const [menuAberto, setMenuAberto] = useState<boolean | null>(true);
     // const [modalRenovarLogin, setModalRenovarLogin] = useState<boolean>(false);
@@ -116,6 +118,32 @@ export default function LayoutDashboard(): JSX.Element {
     useEffect(() => {
         localStorage.setItem("menuAberto", JSON.stringify(menuAberto));
     }, [menuAberto])
+
+    // menu temporário
+    useEffect(() => {
+        setItensMenu([
+            {
+                ativo: true,
+                caminho: "/uf",
+                descricao: "UF",
+                icone: "FaHome",
+                link: "/uf",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/pallet",
+                descricao: "Pallet",
+                icone: "FaHome",
+                link: "/pallet",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+        ])
+    }, [])
 
     // useEffect(() => {
     //     if (filtroPesquisa) {
@@ -367,7 +395,7 @@ export default function LayoutDashboard(): JSX.Element {
                     /> */}
                     <ScrollArea paddingX='p-3'>
                         <>
-                            {/* {itensMenu.map((item, key) => <MenuItem key={key} props={item} />)} */}
+                            {itensMenu.map((item, key) => <MenuItem key={key} props={item} />)}
                         </>
                     </ScrollArea>
 

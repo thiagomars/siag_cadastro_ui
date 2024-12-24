@@ -16,6 +16,6 @@ export type ItemMenu = {
     ativo: boolean;
     idAlerta: string;
     caminho: string;
-    submenus: Array<ItemMenu>;
+    submenus: Array<ItemMenu> | null;
     possuiAcesso: boolean;
 }
