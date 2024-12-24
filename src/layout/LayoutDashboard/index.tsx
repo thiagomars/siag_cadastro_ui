@@ -152,6 +152,76 @@ export default function LayoutDashboard(): JSX.Element {
                 submenus: null,
                 idAlerta: ""
             },
+            {
+                ativo: true,
+                caminho: "/tipoEndereco",
+                descricao: "Tipo de Endereço",
+                icone: "FaHome",
+                link: "/tipoEndereco",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/setorTrabalho",
+                descricao: "Setor de Trabalho",
+                icone: "FaHome",
+                link: "/setorTrabalho",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/regiaoTrabalho",
+                descricao: "Região de Trabalho",
+                icone: "FaHome",
+                link: "/regiaoTrabalho",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/endereco",
+                descricao: "Endereço",
+                icone: "FaHome",
+                link: "/endereco",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/tipoArea",
+                descricao: "Tipo Área",
+                icone: "FaHome",
+                link: "/tipoArea",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/agrupador",
+                descricao: "Agrupador",
+                icone: "FaHome",
+                link: "/agrupador",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/areaArmazenagem",
+                descricao: "Área de armazenagem",
+                icone: "FaHome",
+                link: "/areaArmazenagem",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
         ])
     }, [])
 

@@ -6,6 +6,7 @@ const NotFound: React.LazyExoticComponent<any> = lazy(() => import("../templates
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
 const Pallet: React.LazyExoticComponent<any> = lazy(() => import("../pages/Pallet"));
 const Deposito: React.LazyExoticComponent<any> = lazy(() => import("../pages/Deposito"));
+const TipoEndereco: React.LazyExoticComponent<any> = lazy(() => import("../pages/TipoEndereco"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
@@ -27,6 +28,11 @@ function Router(): JSX.Element {
                 {
                     path: "deposito",
                     element: <Deposito />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "tipoEndereco",
+                    element: <TipoEndereco />,
                     errorElement: <NotFound />
                 },
             ]
