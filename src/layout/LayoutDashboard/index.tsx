@@ -142,6 +142,16 @@ export default function LayoutDashboard(): JSX.Element {
                 submenus: null,
                 idAlerta: ""
             },
+            {
+                ativo: true,
+                caminho: "/deposito",
+                descricao: "Depósito",
+                icone: "FaHome",
+                link: "/deposito",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
         ])
     }, [])
 

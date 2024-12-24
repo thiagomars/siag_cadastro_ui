@@ -1,21 +1,18 @@
-import { baseEntity, baseFiltros } from "./baseEntity.d";
+import { baseFiltros } from "./baseEntity.d";
 
 export type depositoListagem = {
-    id_deposito: number;
-    nm_nomedeposito: string;
-
-    dataUltimaAlteracao: Date;
-    usuarioUltimaAlteracao: string;
-} & baseEntity;
+    depositoId: number;
+    nmDeposito: string;
+};
 
 export type depositoCadastro = {
-    id_deposito: number;
-    nm_nomedeposito: string;
+    depositoId: number;
+    nmDeposito: string;
 }
 
 export type depositoForm = {
-    id_deposito: number;
-    nm_nomedeposito: string;
+    depositoId: number;
+    nmDeposito: string;
 }
 
 export type depositoFiltrosListagem = {

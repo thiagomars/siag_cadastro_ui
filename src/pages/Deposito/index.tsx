@@ -104,7 +104,7 @@ export default function Deposito(): JSX.Element {
 
         toast({ mensagem: "Deletando Depósito" });
 
-        const response = await deleteDeposito(DepositoSelecionado.id);
+        const response = await deleteDeposito(DepositoSelecionado.depositoId);
 
         if (response.sucesso) {
             carregaDeposito(registrosPorPagina, listaDeposito?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
@@ -180,13 +180,13 @@ export default function Deposito(): JSX.Element {
                                 <Tabela.Body>
                                     {listaDeposito.map((item: depositoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.depositoId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.id_deposito}
+                                                    {item.depositoId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomedeposito}
+                                                    {item.nmDeposito}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
@@ -229,8 +229,8 @@ export default function Deposito(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${DepositoSelecionado?.nm_nomedeposito}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar o Depósito: ${DepositoSelecionado?.nm_nomedeposito}?`} />
+                <Modal.Titulo texto={`Deletar ${DepositoSelecionado?.nmDeposito}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Depósito: ${DepositoSelecionado?.nmDeposito}?`} />
 
                 <Modal.ContainerBotoes>
                     <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteDeposito} />

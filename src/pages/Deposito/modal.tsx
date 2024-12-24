@@ -27,7 +27,7 @@ export default function ModalDeposito(props: Props) {
 
     useEffect(() => {
         if (depositoSelecionado != null) {
-            carregaDepositosPorId(depositoSelecionado.id);
+            carregaDepositosPorId(depositoSelecionado.depositoId);
         }
     }, [depositoSelecionado]);
 
@@ -75,8 +75,8 @@ export default function ModalDeposito(props: Props) {
         setDepositoSelecionado(null);
         setId(0);
         DepositoReset({
-            nm_nomedeposito: "",
-            id_deposito: 0
+            nmDeposito: "",
+            depositoId: 0
         })
     }
 
@@ -123,24 +123,14 @@ export default function ModalDeposito(props: Props) {
         >
             <Formulario className="col-span-2 grid grid-cols-2">
                 <Formulario.InputTexto
-                    name="nm_deposito"
-                    label="Deposito"
+                    name="nmDeposito"
+                    label="Descrição"
                     type="text"
                     disabled={salvandoDeposito}
                     opcional={false}
                     className="col-span-2 mb-2"
                     register={DepositoRegister}
                 />
-                <Formulario.InputTexto
-                    name="nm_nomedeposito"
-                    label="Nome Deposito"
-                    type="text"
-                    disabled={salvandoDeposito}
-                    opcional={false}
-                    className="col-span-2 mb-2"
-                    register={DepositoRegister}
-                />
-
             </Formulario>
         </ModalLateral>
     );

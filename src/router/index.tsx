@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LayoutDashboard from "../layout/LayoutDashboard";
-// import routesImpressoes from "./impressoes";
 
 const NotFound: React.LazyExoticComponent<any> = lazy(() => import("../templates/pages/NotFound"));
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
