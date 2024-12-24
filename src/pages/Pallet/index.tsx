@@ -14,7 +14,7 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-// import ModalPallet from "./modal";
+import ModalPallet from "./modal";
 
 import { deletePallet, getListPallet } from "../../services/pallet";
 import { palletFiltrosListagem, palletListagem } from "../../types/pallet.d";
@@ -258,13 +258,13 @@ export default function Pallet(): JSX.Element {
                 </Modal.ContainerBotoes>
             </Modal>
 
-            {/* <ModalPallet
+            <ModalPallet
                 open={openModal}
                 setOpen={setOpenModal}
                 palletSelecionado={PalletSelecionado}
                 setPalletSelecionado={setPalletSelecionado}
                 carregaPallets={carregaPallet}
-            /> */}
+            />
         </>
     );
 }

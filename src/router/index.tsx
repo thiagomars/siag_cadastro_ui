@@ -5,21 +5,10 @@ import LayoutDashboard from "../layout/LayoutDashboard";
 
 const NotFound: React.LazyExoticComponent<any> = lazy(() => import("../templates/pages/NotFound"));
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
+const Pallet: React.LazyExoticComponent<any> = lazy(() => import("../pages/Pallet"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
-        // {
-        //     path: "/login",
-        //     element: <></>,
-        //     errorElement: <NotFound />,
-        //     children: [
-        //         {
-        //             path: "",
-        //             element: <p>login</p>,
-        //             errorElement: <NotFound />
-        //         }
-        //     ]
-        // },
         {
             path: "/",
             element: <LayoutDashboard />,
@@ -29,12 +18,14 @@ function Router(): JSX.Element {
                     path: "uf",
                     element: <Uf/>,
                     errorElement: <NotFound />
-                }
+                },
+                {
+                    path: "pallet",
+                    element: <Pallet/>,
+                    errorElement: <NotFound />
+                },
             ]
-        },
-        // routesPaginas,
-        // routesImpressoes,
-        // routesCadastro
+        }
     ]);
 
     return (
