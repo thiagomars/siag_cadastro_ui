@@ -8,21 +8,13 @@ const NotFound: React.LazyExoticComponent<any> = lazy(
     () => import("../templates/pages/NotFound")
 );
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
+const Pallet: React.LazyExoticComponent<any> = lazy(() => import("../pages/Pallet"));
+const Deposito: React.LazyExoticComponent<any> = lazy(() => import("../pages/Deposito"));
+const TipoEndereco: React.LazyExoticComponent<any> = lazy(() => import("../pages/TipoEndereco"));
+const TipoArea: React.LazyExoticComponent<any> = lazy(() => import("../pages/TipoArea"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
-        // {
-        //     path: "/login",
-        //     element: <></>,
-        //     errorElement: <NotFound />,
-        //     children: [
-        //         {
-        //             path: "",
-        //             element: <p>login</p>,
-        //             errorElement: <NotFound />
-        //         }
-        //     ]
-        // },
         {
             path: "/",
             element: <LayoutDashboard />,
@@ -31,25 +23,35 @@ function Router(): JSX.Element {
                 {
                     path: "uf",
                     element: <Uf />,
-                    errorElement: <NotFound />,
+                    errorElement: <NotFound />
                 },
-            ],
-        },
-        {
-            path: "/",
-            element: <LayoutDashboard />,
-            errorElement: <NotFound />,
-            children: [
                 {
-                    path: "equipamentos",
-                    element: <Equipamentos />,
-                    errorElement: <NotFound />,
+                    path: "pallet",
+                    element: <Pallet />,
+                    errorElement: <NotFound />
                 },
-            ],
-        },
-        // routesPaginas,
-        // routesImpressoes,
-        // routesCadastro
+                {
+                    path: "deposito",
+                    element: <Deposito />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "tipoEndereco",
+                    element: <TipoEndereco />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "tipoArea",
+                    element: <TipoArea />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "equipamento",
+                    element: <Equipamentos />,
+                    errorElement: <NotFound />
+                }
+            ]
+        }
     ]);
 
     return <RouterProvider router={router} />;

@@ -14,17 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalPallet from "./modal";
+import ModalTipoEndereco from "./modal";
 
-import { deletePallet, getListPallet } from "../../services/pallet";
-import { palletFiltrosListagem, palletListagem } from "../../types/pallet.d";
+import { deleteTipoEndereco, getListTipoEndereco } from "../../services/tipoEndereco.ts";
+import { tipoEnderecoFiltrosListagem, tipoEnderecoListagem } from "../../types/tipoEndereco.d";
 
-export default function Pallet(): JSX.Element {
+export default function TipoEndereco(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaPallet, setListaPallet] = useState<Array<palletListagem>>([]);
+    const [listaTipoEndereco, setListaTipoEndereco] = useState<Array<tipoEnderecoListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [PalletSelecionado, setPalletSelecionado] = useState<palletListagem | null>(null);
+    const [TipoEnderecoSelecionado, setTipoEnderecoSelecionado] = useState<tipoEnderecoListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Pallet(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<palletFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<tipoEnderecoFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +47,11 @@ export default function Pallet(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaPallet = async (
+    const carregaTipoEndereco = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: palletFiltrosListagem = {
+        let filtros: tipoEnderecoFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +62,7 @@ export default function Pallet(): JSX.Element {
             }
         })();
 
-        const request = () => getListPallet(filtros);
+        const request = () => getListTipoEndereco(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +71,7 @@ export default function Pallet(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaPallet(response.dados.dados);
+            setListaTipoEndereco(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +81,37 @@ export default function Pallet(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaPallet, 500);
+    const filtroDebounce = useDebounce(carregaTipoEndereco, 500);
 
-    function handleNovoPallet(): void {
-        setPalletSelecionado(null);
+    function handleNovoTipoEndereco(): void {
+        setTipoEnderecoSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarPallet(dados: palletListagem): void {
-        setPalletSelecionado({ ...dados });
+    function handleEditarTipoEndereco(dados: tipoEnderecoListagem): void {
+        setTipoEnderecoSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeletePallet(dados: palletListagem): void {
-        setPalletSelecionado({ ...dados });
+    function handleDeleteTipoEndereco(dados: tipoEnderecoListagem): void {
+        setTipoEnderecoSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeletePallet() {
-        if (PalletSelecionado == null)
+    async function confirmDeleteTipoEndereco() {
+        if (TipoEnderecoSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Pallet" });
+        toast({ mensagem: "Deletando Tipo Endereço" });
 
-        const response = await deletePallet(PalletSelecionado.id_pallet);
+        const response = await deleteTipoEndereco(TipoEnderecoSelecionado.tipoEnderecoId);
 
         if (response.sucesso) {
-            carregaPallet(registrosPorPagina, listaPallet?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaTipoEndereco(registrosPorPagina, listaTipoEndereco?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setPalletSelecionado(null);
+            setTipoEnderecoSelecionado(null);
             toast({
-                mensagem: "Pallet deletado com sucesso.",
+                mensagem: "Tipo Endereço deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +147,25 @@ export default function Pallet(): JSX.Element {
 
                 </Box>
 
-                {!listaPallet.length ? (
+                {!listaTipoEndereco.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhum Pallet Cadastrado"
+                            texto="Nenhum Tipo de Endereço Cadastrado"
                             botao={true}
-                            acao={handleNovoPallet}
+                            acao={handleNovoTipoEndereco}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Pallet"
+                                titulo="Tipo de Endereço"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoPallet}
+                                            onClick={handleNovoTipoEndereco}
 
                                         />
                                     </>
@@ -173,46 +173,26 @@ export default function Pallet(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Área de armazenagem</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Agrupador</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna alignText="text-center">Qtd. Utilizado</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna alignText="text-center">Última movimentação</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaPallet.map((item: palletListagem) => {
+                                    {listaTipoEndereco.map((item: tipoEnderecoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id_pallet}>
+                                            <Tabela.Body.Linha key={item.tipoEnderecoId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.id_pallet}
+                                                    {item.tipoEnderecoId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.id_areaarmazenagem}
+                                                    {item.nmTipoEndereco}
                                                 </Tabela.Body.Linha.Coluna>
 
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.id_agrupador}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.fg_status}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.qt_utilizacao}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.dt_ultimamovimentacao}
-                                                </Tabela.Body.Linha.Coluna>
-                                                
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarPallet(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeletePallet(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarTipoEndereco(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteTipoEndereco(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -229,15 +209,15 @@ export default function Pallet(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaPallet(registrosPorPagina, paginaAtual - 1);
+                                    carregaTipoEndereco(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaPallet(registrosPorPagina, paginaAtual + 1);
+                                    carregaTipoEndereco(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaPallet(registrosPorPagina, pagina);
+                                    carregaTipoEndereco(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -249,21 +229,21 @@ export default function Pallet(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${PalletSelecionado?.id_pallet}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar o Pallet: ${PalletSelecionado?.id_pallet}?`} />
+                <Modal.Titulo texto={`Deletar ${TipoEnderecoSelecionado?.nmTipoEndereco}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Tipo de Endereço: ${TipoEnderecoSelecionado?.nmTipoEndereco}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeletePallet} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteTipoEndereco} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalPallet
+            <ModalTipoEndereco
                 open={openModal}
                 setOpen={setOpenModal}
-                palletSelecionado={PalletSelecionado}
-                setPalletSelecionado={setPalletSelecionado}
-                carregaPallets={carregaPallet}
+                tipoEnderecoSelecionado={TipoEnderecoSelecionado}
+                setTipoEnderecoSelecionado={setTipoEnderecoSelecionado}
+                carregaTipoEnderecos={carregaTipoEndereco}
             />
         </>
     );
