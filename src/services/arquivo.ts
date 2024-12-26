@@ -11,5 +11,5 @@ export const postUploadArquivo = async (arquivo: arquivoUpload | FormData) => {
 }
 
 export const postUploadArquivoAnonymous = async (arquivo: arquivoUpload | FormData) => {
-    return await postRequest(`/Cadastro/arquivo`, arquivo);
+    return await postRequest(`/arquivo`, arquivo);
 }

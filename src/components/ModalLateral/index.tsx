@@ -15,7 +15,7 @@ type Props = {
     open: boolean;
     saving: boolean;
     children: JSX.Element;
-    id: number | null;
+    id: number | string | null;
     usuarioCadastro: string | null;
     dataCadastro: Date | null;
     usuarioUltimaAlteracao: string | null;

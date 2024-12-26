@@ -14,17 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalUf from "./modal";
+import ModalEndereco from "./modal";
 
-import { deleteUf, getListUf } from "../../services/uf";
-import { ufFiltrosListagem, ufListagem } from "../../types/uf.d";
+import { deleteEndereco, getListEndereco } from "../../services/endereco";
+import { enderecoFiltrosListagem, enderecoListagem } from "../../types/endereco.d";
 
-export default function Uf(): JSX.Element {
+export default function Endereco(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaUf, setListaUf] = useState<Array<ufListagem>>([]);
+    const [listaEndereco, setListaEndereco] = useState<Array<enderecoListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [UfSelecionado, setUfSelecionado] = useState<ufListagem | null>(null);
+    const [EnderecoSelecionado, setEnderecoSelecionado] = useState<enderecoListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Uf(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<ufFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<enderecoFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +47,11 @@ export default function Uf(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaUf = async (
+    const carregaEndereco = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: ufFiltrosListagem = {
+        let filtros: enderecoFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +62,7 @@ export default function Uf(): JSX.Element {
             }
         })();
 
-        const request = () => getListUf(filtros);
+        const request = () => getListEndereco(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +71,7 @@ export default function Uf(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaUf(response.dados.dados);
+            setListaEndereco(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +81,37 @@ export default function Uf(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaUf, 500);
+    const filtroDebounce = useDebounce(carregaEndereco, 500);
 
-    function handleNovoUf(): void {
-        setUfSelecionado(null);
+    function handleNovoEndereco(): void {
+        setEnderecoSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleEditarEndereco(dados: enderecoListagem): void {
+        setEnderecoSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeleteUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleDeleteEndereco(dados: enderecoListagem): void {
+        setEnderecoSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeleteUf() {
-        if (UfSelecionado == null)
+    async function confirmDeleteEndereco() {
+        if (EnderecoSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Uf" });
+        toast({ mensagem: "Deletando Endereço" });
 
-        const response = await deleteUf(UfSelecionado.nm_uf);
+        const response = await deleteEndereco(EnderecoSelecionado.enderecoId);
 
         if (response.sucesso) {
-            carregaUf(registrosPorPagina, listaUf?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaEndereco(registrosPorPagina, listaEndereco?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setUfSelecionado(null);
+            setEnderecoSelecionado(null);
             toast({
-                mensagem: "Uf deletado com sucesso.",
+                mensagem: "Endereço deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +147,25 @@ export default function Uf(): JSX.Element {
 
                 </Box>
 
-                {!listaUf.length ? (
+                {!listaEndereco.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhuma UF Cadastrada"
+                            texto="Nenhum Endereço Cadastrado"
                             botao={true}
-                            acao={handleNovoUf}
+                            acao={handleNovoEndereco}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Unidade Federativa - UF"
+                                titulo="Endereço"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoUf}
+                                            onClick={handleNovoEndereco}
 
                                         />
                                     </>
@@ -174,25 +174,56 @@ export default function Uf(): JSX.Element {
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Trabalho</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Tipo Endereço</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Estoque</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Preenchimento</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaUf.map((item: ufListagem) => {
+                                    {listaEndereco.map((item: enderecoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.enderecoId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.enderecoId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeuf}
+                                                    {item.nmEndereco}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Setor: {item?.setorTrabalho?.nmSetorTrabalho}</p>
+                                                        <p>Região: {item?.regiaoTrabalho?.nmRegiaoTrabalho}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    {item.tipoEndereco?.nmTipoEndereco}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Máx. {item.qtEstoqueMaximo}</p>
+                                                        <p>Min. {item.qtEstoqueMinimo}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.tpPreenchimento}
                                                 </Tabela.Body.Linha.Coluna>
                                                 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.fgStatus}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarUf(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteUf(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarEndereco(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteEndereco(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -209,15 +240,15 @@ export default function Uf(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaUf(registrosPorPagina, paginaAtual - 1);
+                                    carregaEndereco(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaUf(registrosPorPagina, paginaAtual + 1);
+                                    carregaEndereco(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaUf(registrosPorPagina, pagina);
+                                    carregaEndereco(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -229,21 +260,21 @@ export default function Uf(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${UfSelecionado?.nm_nomeuf}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a Unidade Federativa: ${UfSelecionado?.nm_nomeuf}?`} />
+                <Modal.Titulo texto={`Deletar ${EnderecoSelecionado?.nmEndereco}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Endereço: ${EnderecoSelecionado?.nmEndereco}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteUf} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteEndereco} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalUf
+            <ModalEndereco
                 open={openModal}
                 setOpen={setOpenModal}
-                ufSelecionado={UfSelecionado}
-                setUfSelecionado={setUfSelecionado}
-                carregaUfs={carregaUf}
+                enderecoSelecionado={EnderecoSelecionado}
+                setEnderecoSelecionado={setEnderecoSelecionado}
+                carregaEnderecos={carregaEndereco}
             />
         </>
     );

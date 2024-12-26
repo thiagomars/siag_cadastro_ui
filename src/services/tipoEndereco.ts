@@ -26,5 +26,5 @@ export const deleteTipoEndereco = async (id: number) => {
 };
 
 export const getSelectTipoEndereco = async (pesquisa: tipoEnderecoFiltroSelect) => {
-  return await postRequest(`/Cadastro/TipoEndereco/Select`, pesquisa);
+  return await postRequest(`/TipoEndereco/Select`, pesquisa);
 };

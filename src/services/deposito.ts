@@ -26,5 +26,5 @@ export const deleteDeposito = async (id: number) => {
 };
 
 export const getSelectDeposito = async (pesquisa: depositoFiltroSelect) => {
-  return await postRequest(`/Cadastro/Deposito/Select`, pesquisa);
+  return await postRequest(`/Deposito/Select`, pesquisa);
 };

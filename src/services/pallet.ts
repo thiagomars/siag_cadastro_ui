@@ -26,5 +26,5 @@ export const deletePallet = async (id: number) => {
 };
 
 export const getSelectPallet = async (pesquisa: palletFiltroSelect) => {
-  return await postRequest(`/Cadastro/Pallet/Select`, pesquisa);
+  return await postRequest(`/Pallet/Select`, pesquisa);
 };

@@ -14,17 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalUf from "./modal";
+import ModalSetorTrabalho from "./modal";
 
-import { deleteUf, getListUf } from "../../services/uf";
-import { ufFiltrosListagem, ufListagem } from "../../types/uf.d";
+import { deleteSetorTrabalho, getListSetorTrabalho } from "../../services/setorTrabalho";
+import { setorTrabalhoFiltrosListagem, setorTrabalhoListagem } from "../../types/setorTrabalho.d";
 
-export default function Uf(): JSX.Element {
+export default function SetorTrabalho(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaUf, setListaUf] = useState<Array<ufListagem>>([]);
+    const [listaSetorTrabalho, setListaSetorTrabalho] = useState<Array<setorTrabalhoListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [UfSelecionado, setUfSelecionado] = useState<ufListagem | null>(null);
+    const [SetorTrabalhoSelecionado, setSetorTrabalhoSelecionado] = useState<setorTrabalhoListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Uf(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<ufFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<setorTrabalhoFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +47,11 @@ export default function Uf(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaUf = async (
+    const carregaSetorTrabalho = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: ufFiltrosListagem = {
+        let filtros: setorTrabalhoFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +62,7 @@ export default function Uf(): JSX.Element {
             }
         })();
 
-        const request = () => getListUf(filtros);
+        const request = () => getListSetorTrabalho(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +71,7 @@ export default function Uf(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaUf(response.dados.dados);
+            setListaSetorTrabalho(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +81,37 @@ export default function Uf(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaUf, 500);
+    const filtroDebounce = useDebounce(carregaSetorTrabalho, 500);
 
-    function handleNovoUf(): void {
-        setUfSelecionado(null);
+    function handleNovoSetorTrabalho(): void {
+        setSetorTrabalhoSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleEditarSetorTrabalho(dados: setorTrabalhoListagem): void {
+        setSetorTrabalhoSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeleteUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleDeleteSetorTrabalho(dados: setorTrabalhoListagem): void {
+        setSetorTrabalhoSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeleteUf() {
-        if (UfSelecionado == null)
+    async function confirmDeleteSetorTrabalho() {
+        if (SetorTrabalhoSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Uf" });
+        toast({ mensagem: "Deletando Setor de Trabalho" });
 
-        const response = await deleteUf(UfSelecionado.nm_uf);
+        const response = await deleteSetorTrabalho(SetorTrabalhoSelecionado.setorTrabalhoId);
 
         if (response.sucesso) {
-            carregaUf(registrosPorPagina, listaUf?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaSetorTrabalho(registrosPorPagina, listaSetorTrabalho?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setUfSelecionado(null);
+            setSetorTrabalhoSelecionado(null);
             toast({
-                mensagem: "Uf deletado com sucesso.",
+                mensagem: "Setor de Trabalho deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +147,25 @@ export default function Uf(): JSX.Element {
 
                 </Box>
 
-                {!listaUf.length ? (
+                {!listaSetorTrabalho.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhuma UF Cadastrada"
+                            texto="Nenhum Setor de Trabalho Cadastrado"
                             botao={true}
-                            acao={handleNovoUf}
+                            acao={handleNovoSetorTrabalho}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Unidade Federativa - UF"
+                                titulo="Setor de Trabalho"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoUf}
+                                            onClick={handleNovoSetorTrabalho}
 
                                         />
                                     </>
@@ -174,25 +174,30 @@ export default function Uf(): JSX.Element {
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Depósito</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaUf.map((item: ufListagem) => {
+                                    {listaSetorTrabalho.map((item: setorTrabalhoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.setorTrabalhoId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.setorTrabalhoId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeuf}
+                                                    {item.nmSetorTrabalho}
                                                 </Tabela.Body.Linha.Coluna>
-                                                
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    {item.deposito?.nmDeposito}
+                                                </Tabela.Body.Linha.Coluna>
+
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarUf(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteUf(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarSetorTrabalho(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteSetorTrabalho(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -209,15 +214,15 @@ export default function Uf(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaUf(registrosPorPagina, paginaAtual - 1);
+                                    carregaSetorTrabalho(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaUf(registrosPorPagina, paginaAtual + 1);
+                                    carregaSetorTrabalho(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaUf(registrosPorPagina, pagina);
+                                    carregaSetorTrabalho(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -229,21 +234,21 @@ export default function Uf(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${UfSelecionado?.nm_nomeuf}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a Unidade Federativa: ${UfSelecionado?.nm_nomeuf}?`} />
+                <Modal.Titulo texto={`Deletar ${SetorTrabalhoSelecionado?.nmSetorTrabalho}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Setor de Trabalho: ${SetorTrabalhoSelecionado?.nmSetorTrabalho}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteUf} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteSetorTrabalho} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalUf
+            <ModalSetorTrabalho
                 open={openModal}
                 setOpen={setOpenModal}
-                ufSelecionado={UfSelecionado}
-                setUfSelecionado={setUfSelecionado}
-                carregaUfs={carregaUf}
+                setorTrabalhoSelecionado={SetorTrabalhoSelecionado}
+                setSetorTrabalhoSelecionado={setSetorTrabalhoSelecionado}
+                carregaSetorTrabalhos={carregaSetorTrabalho}
             />
         </>
     );
