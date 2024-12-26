@@ -46,39 +46,41 @@ type PropsBodyLinhaColuna = {
 
 function Tabela({ titulo, tamanhoTitulo = "grande", descricao, children, botoes, tags, icone, iconeDestaque }: PropsTabela): JSX.Element {
     return (
-        <div className="bg-white sm:rounded-lg rounded-t-lg divide-y">
-            <div className="sm:flex pb-4 sm:items-center border-gray-200">
-                <div className="sm:flex-auto">
-                    <div className='flex flex-row items-center gap-2'>
-                        <div className={classNames(iconeDestaque && "p-2 bg-primary-900 rounded-md")}>
-                            <IconeAtual className={classNames("w-6 h-6", iconeDestaque ? "text-white" : "text-primary-900")} icone={icone} />
+        <ScrollArea paddingX='px-0'>
+            <div className="bg-white sm:rounded-lg rounded-t-lg divide-y">
+                <div className={`sm:flex sm:items-center border-gray-200 ${titulo && 'pb-4'}`}>
+                    <div className="sm:flex-auto">
+                        <div className='flex flex-row items-center gap-2'>
+                            <div className={classNames(iconeDestaque && "p-2 bg-primary-900 rounded-md")}>
+                                <IconeAtual className={classNames("w-6 h-6", iconeDestaque ? "text-white" : "text-primary-900")} icone={icone} />
+                            </div>
+                            <h1 className={classNames(
+                                'font-semibold text-primary-900',
+                                (tamanhoTitulo == "normal" ? "text-lg" : (tamanhoTitulo == "pequeno" ? "text-base" : "text-2xl"))
+                            )}>{titulo}</h1>
                         </div>
-                        <h1 className={classNames(
-                            'font-semibold text-primary-900',
-                            (tamanhoTitulo == "normal" ? "text-lg" : (tamanhoTitulo == "pequeno" ? "text-base" : "text-2xl"))
-                        )}>{titulo}</h1>
+                        {descricao && <span className="text-sm font-normal text-gray-500">{descricao}</span>}
                     </div>
-                    {descricao && <span className="text-sm font-normal text-gray-500">{descricao}</span>}
-                </div>
-                <div className="flex flex-col lg:flex-row gap-4 mt-2 lg:mt-0">
-                    {botoes}
-                </div>
-            </div>
-            {tags}
-            <div className="flow-root -mx-4">
-                <div className="overflow-x-auto">
-                    <div className="inline-block min-w-full align-middle">
-                        <div className="overflow-hidden shadow grid ring-1 ring-black ring-opacity-5">
-                            <ScrollArea paddingX="px-1 lg:px-0">
-                                <table className="min-w-full table divide-y divide-gray-300">
-                                    {children}
-                                </table>
-                            </ScrollArea>
-                        </div>
+                    <div className="flex flex-col lg:flex-row gap-4 mt-2 lg:mt-0">
+                        {botoes}
                     </div>
                 </div>
+                {tags}
+                <div className="flow-root">
+                    <div className="overflow-x-auto">
+                        <div className="inline-block min-w-full align-middle">
+                            <div className="overflow-hidden shadow grid ring-1 ring-black ring-opacity-5">
+                                <ScrollArea paddingX="px-1 lg:px-0">
+                                    <table className="min-w-full table divide-y divide-gray-300">
+                                        {children}
+                                    </table>
+                                </ScrollArea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </ScrollArea>
     );
 }
 
@@ -141,7 +143,7 @@ const Linha = ({ children }: { children: any }) => {
     );
 };
 
-const ColunaBody = ({ children, alignText = "text-left", detalhesOpen = undefined, className = "" }: { children?: React.ReactNode, alignText?: string , detalhesOpen?: boolean, className?: string }) => {
+const ColunaBody = ({ children, alignText = "text-left", detalhesOpen = undefined, className = "" }: { children?: React.ReactNode, alignText?: string, detalhesOpen?: boolean, className?: string }) => {
     return (
         <td className={classNames(`whitespace-nowrap max-w-sm truncate px-3 py-4 text-sm text-gray-500`, alignText, className)}>
             <div className={classNames(detalhesOpen != undefined && 'flex items-center gap-2')}>

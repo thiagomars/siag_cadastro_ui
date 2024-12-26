@@ -1,9 +1,12 @@
 import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LayoutDashboard from "../layout/LayoutDashboard";
+import { Equipamentos } from "../pages/Equipamentos";
 // import routesImpressoes from "./impressoes";
 
-const NotFound: React.LazyExoticComponent<any> = lazy(() => import("../templates/pages/NotFound"));
+const NotFound: React.LazyExoticComponent<any> = lazy(
+    () => import("../templates/pages/NotFound")
+);
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
 
 function Router(): JSX.Element {
@@ -27,19 +30,29 @@ function Router(): JSX.Element {
             children: [
                 {
                     path: "uf",
-                    element: <Uf/>,
-                    errorElement: <NotFound />
-                }
-            ]
+                    element: <Uf />,
+                    errorElement: <NotFound />,
+                },
+            ],
+        },
+        {
+            path: "/",
+            element: <LayoutDashboard />,
+            errorElement: <NotFound />,
+            children: [
+                {
+                    path: "equipamentos",
+                    element: <Equipamentos />,
+                    errorElement: <NotFound />,
+                },
+            ],
         },
         // routesPaginas,
         // routesImpressoes,
         // routesCadastro
     ]);
 
-    return (
-        <RouterProvider router={router} />
-    )
+    return <RouterProvider router={router} />;
 }
 
 export default Router;
