@@ -10,7 +10,7 @@ import { enderecoCadastro, enderecoListagem } from "../../types/endereco.d";
 import SelectRegiaoTrabalho from "../../templates/selects/RegiaoTrabalhoSelect";
 import SelectSetorTrabalho from "../../templates/selects/SetorTrabalhoSelect";
 import SelectTipoEndereco from "../../templates/selects/TipoEnderecoSelect";
-import { FaBox } from "react-icons/fa6";
+import { FaCube, FaCubes } from "react-icons/fa6";
 
 type Props = {
     open: boolean;
@@ -104,10 +104,18 @@ export default function ModalEndereco(props: Props) {
             toast({ tipo: 'dismiss' });
             EnderecoReset({
                 ...response.dados,
-                deposito: {
-                    value: response.dados?.deposito?.depositoId,
-                    label: response.dados?.deposito?.depositoId + " - " + response.dados?.deposito?.nmDeposito
-                }
+                regiaoTrabalho: {
+                    value: response.dados?.regiaoTrabalho?.regiaoTrabalhoId,
+                    label: response.dados?.regiaoTrabalho?.regiaoTrabalhoId + " - " + response.dados?.regiaoTrabalho?.nmRegiaoTrabalho
+                },
+                setorTrabalho: {
+                    value: response.dados?.setorTrabalho?.setorTrabalhoId,
+                    label: response.dados?.setorTrabalho?.setorTrabalhoId + " - " + response.dados?.setorTrabalho?.nmSetorTrabalho
+                },
+                tipoEndereco: {
+                    value: response.dados?.tipoEndereco?.tipoEnderecoId,
+                    label: response.dados?.tipoEndereco?.tipoEnderecoId + " - " + response.dados?.tipoEndereco?.nmTipoEndereco
+                },
             });
         } else {
             toast({
@@ -184,7 +192,7 @@ export default function ModalEndereco(props: Props) {
                     control={EnderecoControl}
                     decimalPlaces={0}
                     align="text-left"
-                    icone={<FaBox />}
+                    icone={<FaCube className="fill-gray-600"/>}
                 />
 
                 <Formulario.InputNumber
@@ -195,7 +203,7 @@ export default function ModalEndereco(props: Props) {
                     control={EnderecoControl}
                     decimalPlaces={0}
                     align="text-left"
-                    icone={<FaBox />}
+                    icone={<FaCubes className="fill-gray-600"/>}
                 />
 
                 <Formulario.InputNumber

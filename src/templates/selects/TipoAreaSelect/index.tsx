@@ -4,7 +4,7 @@ import Formulario from "../../../components/Input";
 import useDebounce from "../../../hooks/useDebounce";
 import useToastLoading from "../../../hooks/useToastLoading";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
-import { getSelectSetorTrabalho } from "../../../services/setorTrabalho.ts";
+import { getSelectTipoArea } from "../../../services/tipoArea.ts";
 
 type Props = {
     control: Control<any>,
@@ -12,7 +12,7 @@ type Props = {
 } & typeSelect;
 
 
-export default function SelectSetorTrabalho({ children }: { children: React.ReactNode }): JSX.Element {
+export default function SelectTipoArea({ children }: { children: React.ReactNode }): JSX.Element {
     return (
         <>
             {children}
@@ -28,17 +28,17 @@ const Single = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesSetorTrabalho("");
+        filtroOpcoesTipoArea("");
     }, [])
 
-    const filtroOpcoesSetorTrabalho = useDebounce((pesquisa: string) => carregaSelectSetorTrabalho(pesquisa), 500);
+    const filtroOpcoesTipoArea = useDebounce((pesquisa: string) => carregaSelectTipoArea(pesquisa), 500);
 
-    async function carregaSelectSetorTrabalho(pesquisa: string): Promise<void> {
+    async function carregaSelectTipoArea(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectSetorTrabalho(dados);
+        const response = await getSelectTipoArea(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -58,13 +58,13 @@ const Single = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelect
-            name={name || "setorTrabalho"}
-            label={label || "Setor de Trabalho"}
+            name={name || "tipoArea"}
+            label={label || "Tipo de área"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesSetorTrabalho}
+            onInputChange={filtroOpcoesTipoArea}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -82,17 +82,17 @@ const Multi = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesSetorTrabalho("");
+        filtroOpcoesTipoArea("");
     }, [])
 
-    const filtroOpcoesSetorTrabalho = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
+    const filtroOpcoesTipoArea = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
 
     async function carregaSelectDistribuidores(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectSetorTrabalho(dados);
+        const response = await getSelectTipoArea(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -112,13 +112,13 @@ const Multi = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelectMulti
-            name={name || "setorTrabalho"}
-            label={label || "Setor de Trabalho"}
+            name={name || "tipoArea"}
+            label={label || "Tipos de áreas"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesSetorTrabalho}
+            onInputChange={filtroOpcoesTipoArea}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -128,5 +128,5 @@ const Multi = (props: Props): JSX.Element => {
     )
 }
 
-SelectSetorTrabalho.Single = Single;
-SelectSetorTrabalho.Multi = Multi;
+SelectTipoArea.Single = Single;
+SelectTipoArea.Multi = Multi;

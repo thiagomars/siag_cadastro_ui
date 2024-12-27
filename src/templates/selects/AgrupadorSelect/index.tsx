@@ -4,7 +4,7 @@ import Formulario from "../../../components/Input";
 import useDebounce from "../../../hooks/useDebounce";
 import useToastLoading from "../../../hooks/useToastLoading";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
-import { getSelectSetorTrabalho } from "../../../services/setorTrabalho.ts";
+import { getSelectAgrupadorAtivo } from "../../../services/agrupadorAtivo";
 
 type Props = {
     control: Control<any>,
@@ -12,7 +12,7 @@ type Props = {
 } & typeSelect;
 
 
-export default function SelectSetorTrabalho({ children }: { children: React.ReactNode }): JSX.Element {
+export default function SelectAgrupador({ children }: { children: React.ReactNode }): JSX.Element {
     return (
         <>
             {children}
@@ -28,17 +28,17 @@ const Single = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesSetorTrabalho("");
+        filtroOpcoesAgrupador("");
     }, [])
 
-    const filtroOpcoesSetorTrabalho = useDebounce((pesquisa: string) => carregaSelectSetorTrabalho(pesquisa), 500);
+    const filtroOpcoesAgrupador = useDebounce((pesquisa: string) => carregaSelectAgrupador(pesquisa), 500);
 
-    async function carregaSelectSetorTrabalho(pesquisa: string): Promise<void> {
+    async function carregaSelectAgrupador(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectSetorTrabalho(dados);
+        const response = await getSelectAgrupadorAtivo(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -58,13 +58,13 @@ const Single = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelect
-            name={name || "setorTrabalho"}
-            label={label || "Setor de Trabalho"}
+            name={name || "agrupador"}
+            label={label || "Agrupador"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesSetorTrabalho}
+            onInputChange={filtroOpcoesAgrupador}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -82,17 +82,17 @@ const Multi = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesSetorTrabalho("");
+        filtroOpcoesAgrupador("");
     }, [])
 
-    const filtroOpcoesSetorTrabalho = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
+    const filtroOpcoesAgrupador = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
 
     async function carregaSelectDistribuidores(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectSetorTrabalho(dados);
+        const response = await getSelectAgrupadorAtivo(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -112,13 +112,13 @@ const Multi = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelectMulti
-            name={name || "setorTrabalho"}
-            label={label || "Setor de Trabalho"}
+            name={name || "agrupador"}
+            label={label || "Agrupador"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesSetorTrabalho}
+            onInputChange={filtroOpcoesAgrupador}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -128,5 +128,5 @@ const Multi = (props: Props): JSX.Element => {
     )
 }
 
-SelectSetorTrabalho.Single = Single;
-SelectSetorTrabalho.Multi = Multi;
+SelectAgrupador.Single = Single;
+SelectAgrupador.Multi = Multi;

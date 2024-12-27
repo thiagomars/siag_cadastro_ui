@@ -15,6 +15,8 @@ const TipoArea: React.LazyExoticComponent<any> = lazy(() => import("../pages/Tip
 const SetorTrabalho: React.LazyExoticComponent<any> = lazy(() => import("../pages/SetorTrabalho"));
 const RegiaoTrabalho: React.LazyExoticComponent<any> = lazy(() => import("../pages/RegiaoTrabalho"));
 const Endereco: React.LazyExoticComponent<any> = lazy(() => import("../pages/Endereco"));
+const AgrupadorAtivo: React.LazyExoticComponent<any> = lazy(() => import("../pages/AgrupadorAtivo"));
+const AreaArmazenagem: React.LazyExoticComponent<any> = lazy(() => import("../pages/AreaArmazenagem"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
@@ -52,7 +54,7 @@ function Router(): JSX.Element {
                     path: "equipamento",
                     element: <Equipamentos />,
                     errorElement: <NotFound />
-                }
+                },
                 {
                     path: "setorTrabalho",
                     element: <SetorTrabalho />,
@@ -66,6 +68,16 @@ function Router(): JSX.Element {
                 {
                     path: "endereco",
                     element: <Endereco />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "agrupador",
+                    element: <AgrupadorAtivo />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "areaArmazenagem",
+                    element: <AreaArmazenagem />,
                     errorElement: <NotFound />
                 },
             ]

@@ -1,43 +1,53 @@
+import { agrupadorAtivoListagem } from "./agrupadorAtivo.d";
 import { baseFiltros } from "./baseEntity.d";
+import { enderecoListagem } from "./endereco.d";
 import { typeSelectOptions } from "./select.d";
+import { tipoAreaListagem } from "./tipoArea.d";
 
 export type areaArmazenagemListagem = {
-    id_areaarmazenagem: number;
-    id_tipoarea: number;
-    id_endereco: number;
-    id_agrupador: number;
-    nr_posicaox: number;
-    nr_posicaoy: number;
-    nr_lado: number;
-    fg_status: number;
-    cd_identificacao: string;
-    id_agrupador_reservado: number;
+    areaArmazenagemId: number;
+    tipoAreaId: number;
+    tipoArea: tipoAreaListagem;
+    enderecoId: number;
+    endereco: enderecoListagem;
+    agrupadorId: number;
+    agrupador: agrupadorAtivoListagem;
+    nrPosicaoX: number;
+    nrPosicaoY: number;
+    nrLado: number;
+    fgStatus: number;
+    cdIdentificacao: string;
+    agrupadorReservadoId: number;
 };
 
 export type areaArmazenagemCadastro = {
-    id_areaarmazenagem: number;
-    id_tipoarea: number;
-    id_endereco: number;
-    id_agrupador: number;
-    nr_posicaox: number;
-    nr_posicaoy: number;
-    nr_lado: number;
-    fg_status: number;
-    cd_identificacao: string;
-    id_agrupador_reservado: number;
+    areaArmazenagemId: number;
+    tipoAreaId: number;
+    enderecoId: number;
+    agrupadorId: number;
+    nrPosicaoX: number;
+    nrPosicaoY: number;
+    nrLado: number;
+    fgStatus: number;
+    cdIdentificacao: string;
+    agrupadorReservadoId: number;
 }
 
 export type areaArmazenagemForm = {
-    id_areaarmazenagem: number;
-    id_tipoarea: number | typeSelectOptions;
-    id_endereco: number | typeSelectOptions;
-    id_agrupador: number | typeSelectOptions;
-    nr_posicaox: number;
-    nr_posicaoy: number;
-    nr_lado: number;
-    fg_status: number;
-    cd_identificacao: string;
-    id_agrupador_reservado: number | typeSelectOptions;
+    areaArmazenagemId: number;
+    tipoAreaId: number;
+    tipoArea: typeSelectOptions;
+    enderecoId: number;
+    endereco: typeSelectOptions;
+    agrupadorId: number;
+    agrupador: typeSelectOptions;
+    nrPosicaoX: number;
+    nrPosicaoY: number;
+    nrLado: number;
+    fgStatus: number;
+    cdIdentificacao: string;
+    agrupadorReservadoId: number;
+    agrupadorReservado: typeSelectOptions;
 }
 
 export type areaArmazenagemFiltrosListagem = {
