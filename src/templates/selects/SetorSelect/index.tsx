@@ -3,7 +3,7 @@ import Formulario from "../../../components/Input";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
 import { useEffect, useState } from "react";
 import useToastLoading from "../../../hooks/useToastLoading";
-import { getSelectSetorTrabalho } from "../../../services/setorTrabalho";
+import { getListaSelectSetorTrabalho, getSelectSetorTrabalho } from "../../../services/setorTrabalho";
 
 type Props = {
     control: Control<any>;
@@ -28,7 +28,7 @@ export default function SelectSetor(props: Props) {
     }, []);
 
     async function carregarDados(): Promise<void> {
-        const response = await getSelectSetorTrabalho();
+        const response = await getListaSelectSetorTrabalho();
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {

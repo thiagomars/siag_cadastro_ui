@@ -19,7 +19,7 @@ type Props = {
 export default function ModalUf(props: Props) {
     const { open, setOpen, ufSelecionado, setUfSelecionado, carregaUfs } = props;
 
-    const [id, setId] = useState(0);
+    const [id, setId] = useState("");
     const [salvandoUf, setSalvandoUf] = useState<boolean>(false);
     const { register: UfRegister, handleSubmit: UfSubmit, reset: UfReset } = useForm<ufCadastro>();
     const toast = useToastLoading();
@@ -27,7 +27,7 @@ export default function ModalUf(props: Props) {
 
     useEffect(() => {
         if (ufSelecionado != null) {
-            carregaUfsPorId(ufSelecionado.id);
+            carregaUfsPorId(ufSelecionado.nm_uf);
         }
     }, [ufSelecionado]);
 
@@ -49,13 +49,13 @@ export default function ModalUf(props: Props) {
 
         await UfSubmit((dadosForm) => dados = { ...dadosForm })();
 
-        const request = id > 0 ? () => putUf(dados) : () => postUfs(dados);
+        const request = !!id ? () => putUf(dados) : () => postUfs(dados);
 
         const response = await request();
 
         if (response.sucesso) {
             toast({
-                mensagem: id ? "UF alterado com Sucesso!" : "UF cadastrado com sucesso!",
+                mensagem: !!id ? "UF alterado com Sucesso!" : "UF cadastrado com sucesso!",
                 tipo: response.tipo,
             });
 
@@ -73,14 +73,14 @@ export default function ModalUf(props: Props) {
     const limparCampos: Function = (): void => {
         setAlteracoes(null);
         setUfSelecionado(null);
-        setId(0);
+        setId("");
         UfReset({
             nm_nomeuf: "",
             nm_uf: ""
         })
     }
 
-    async function carregaUfsPorId(id: number): Promise<void> {
+    async function carregaUfsPorId(id: string): Promise<void> {
         if (open)
             toast({ mensagem: "Carregando dados para edição" });
 
@@ -107,12 +107,12 @@ export default function ModalUf(props: Props) {
     }
 
     function getSubtitulo(): string {
-        return `Preencha os campos abaixo para ${id > 0 ? "editar" : "cadastrar"} uma nova UF `;
+        return `Preencha os campos abaixo para ${!!id ? "editar" : "cadastrar"} uma nova UF `;
     }
 
     return (
         <ModalLateral
-            title={id > 0 ? "Editar UF" : "Cadastrar UF"}
+            title={!!id ? "Editar UF" : "Cadastrar UF"}
             subtitle={getSubtitulo()}
             onClose={handleCloseModal}
             onSave={handleSalvar}

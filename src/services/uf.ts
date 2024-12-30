@@ -13,7 +13,7 @@ export const getImpressaoUf = async (filtros: ufFiltrosListagem) => {
   return await postRequest(`/uf/Impressao`, filtros);
 }
 
-export const getUfById = async (id: number) => {
+export const getUfById = async (id: string) => {
   return await getRequest(`/Uf/${id}`);
 };
 
@@ -21,10 +21,10 @@ export const putUf = async (dados: ufCadastro) => {
   return await putRequest(`/Uf`, dados);
 };
 
-export const deleteUf = async (id: number) => {
+export const deleteUf = async (id: string) => {
     return await deleteRequest(`/Uf/${id}`);
 };
 
 export const getSelectUf = async (pesquisa: ufFiltroSelect) => {
-  return await postRequest(`/Cadastro/Uf/Select`, pesquisa);
+  return await postRequest(`/Uf/Select`, pesquisa);
 };

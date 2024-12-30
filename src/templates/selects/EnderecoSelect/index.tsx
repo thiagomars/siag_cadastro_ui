@@ -4,7 +4,7 @@ import Formulario from "../../../components/Input";
 import useDebounce from "../../../hooks/useDebounce";
 import useToastLoading from "../../../hooks/useToastLoading";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
-import { getSelectAreaArmazenagem } from "../../../services/areaArmazenagem.ts";
+import { getSelectEndereco } from "../../../services/endereco.ts";
 
 type Props = {
     control: Control<any>,
@@ -12,7 +12,7 @@ type Props = {
 } & typeSelect;
 
 
-export default function SelectAreaArmazenagem({ children }: { children: React.ReactNode }): JSX.Element {
+export default function SelectEndereco({ children }: { children: React.ReactNode }): JSX.Element {
     return (
         <>
             {children}
@@ -28,17 +28,17 @@ const Single = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesAreaArmazenagem("");
+        filtroOpcoesEndereco("");
     }, [])
 
-    const filtroOpcoesAreaArmazenagem = useDebounce((pesquisa: string) => carregaSelectAreaArmazenagem(pesquisa), 500);
+    const filtroOpcoesEndereco = useDebounce((pesquisa: string) => carregaSelectEndereco(pesquisa), 500);
 
-    async function carregaSelectAreaArmazenagem(pesquisa: string): Promise<void> {
+    async function carregaSelectEndereco(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectAreaArmazenagem(dados);
+        const response = await getSelectEndereco(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -58,13 +58,13 @@ const Single = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelect
-            name={name || "areaArmazenagem"}
-            label={label || "Área de Armazenagem"}
+            name={name || "endereco"}
+            label={label || "Endereço"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesAreaArmazenagem}
+            onInputChange={filtroOpcoesEndereco}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -82,17 +82,17 @@ const Multi = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesAreaArmazenagem("");
+        filtroOpcoesEndereco("");
     }, [])
 
-    const filtroOpcoesAreaArmazenagem = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
+    const filtroOpcoesEndereco = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
 
     async function carregaSelectDistribuidores(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectAreaArmazenagem(dados);
+        const response = await getSelectEndereco(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -112,13 +112,13 @@ const Multi = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelectMulti
-            name={name || "areaArmazenagem"}
-            label={label || "Áreas de Armazenagem"}
+            name={name || "endereco"}
+            label={label || "Endereço"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesAreaArmazenagem}
+            onInputChange={filtroOpcoesEndereco}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -128,5 +128,5 @@ const Multi = (props: Props): JSX.Element => {
     )
 }
 
-SelectAreaArmazenagem.Single = Single;
-SelectAreaArmazenagem.Multi = Multi;
+SelectEndereco.Single = Single;
+SelectEndereco.Multi = Multi;

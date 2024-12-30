@@ -14,17 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalUf from "./modal";
+import ModalAreaArmazenagem from "./modal";
 
-import { deleteUf, getListUf } from "../../services/uf";
-import { ufFiltrosListagem, ufListagem } from "../../types/uf.d";
+import { deleteAreaArmazenagem, getListAreaArmazenagem } from "../../services/areaArmazenagem";
+import { areaArmazenagemFiltrosListagem, areaArmazenagemListagem } from "../../types/areaArmazenagem.d";
 
-export default function Uf(): JSX.Element {
+export default function AreaArmazenagem(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaUf, setListaUf] = useState<Array<ufListagem>>([]);
+    const [listaAreaArmazenagem, setListaAreaArmazenagem] = useState<Array<areaArmazenagemListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [UfSelecionado, setUfSelecionado] = useState<ufListagem | null>(null);
+    const [AreaArmazenagemSelecionado, setAreaArmazenagemSelecionado] = useState<areaArmazenagemListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Uf(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<ufFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<areaArmazenagemFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +47,11 @@ export default function Uf(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaUf = async (
+    const carregaAreaArmazenagem = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: ufFiltrosListagem = {
+        let filtros: areaArmazenagemFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +62,7 @@ export default function Uf(): JSX.Element {
             }
         })();
 
-        const request = () => getListUf(filtros);
+        const request = () => getListAreaArmazenagem(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +71,7 @@ export default function Uf(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaUf(response.dados.dados);
+            setListaAreaArmazenagem(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +81,37 @@ export default function Uf(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaUf, 500);
+    const filtroDebounce = useDebounce(carregaAreaArmazenagem, 500);
 
-    function handleNovoUf(): void {
-        setUfSelecionado(null);
+    function handleNovoAreaArmazenagem(): void {
+        setAreaArmazenagemSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleEditarAreaArmazenagem(dados: areaArmazenagemListagem): void {
+        setAreaArmazenagemSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeleteUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleDeleteAreaArmazenagem(dados: areaArmazenagemListagem): void {
+        setAreaArmazenagemSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeleteUf() {
-        if (UfSelecionado == null)
+    async function confirmDeleteAreaArmazenagem() {
+        if (AreaArmazenagemSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Uf" });
+        toast({ mensagem: "Deletando Área de Armazenagem" });
 
-        const response = await deleteUf(UfSelecionado.nm_uf);
+        const response = await deleteAreaArmazenagem(AreaArmazenagemSelecionado.agrupadorId);
 
         if (response.sucesso) {
-            carregaUf(registrosPorPagina, listaUf?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaAreaArmazenagem(registrosPorPagina, listaAreaArmazenagem?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setUfSelecionado(null);
+            setAreaArmazenagemSelecionado(null);
             toast({
-                mensagem: "Uf deletado com sucesso.",
+                mensagem: "Área de Armazenagem deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +147,25 @@ export default function Uf(): JSX.Element {
 
                 </Box>
 
-                {!listaUf.length ? (
+                {!listaAreaArmazenagem.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhuma UF Cadastrada"
+                            texto="Nenhuma Área de Armazenagem Cadastrada"
                             botao={true}
-                            acao={handleNovoUf}
+                            acao={handleNovoAreaArmazenagem}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Unidade Federativa - UF"
+                                titulo="Área de Armazenagem"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoUf}
+                                            onClick={handleNovoAreaArmazenagem}
 
                                         />
                                     </>
@@ -173,26 +173,65 @@ export default function Uf(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Identificação</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Endereço</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Agrupador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Posição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Lado</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaUf.map((item: ufListagem) => {
+                                    {listaAreaArmazenagem.map((item: areaArmazenagemListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.agrupadorId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.agrupadorId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeuf}
+                                                    <div>
+                                                        <p>{item.cdIdentificacao}</p>
+                                                        <p>{item.tipoArea?.nmTipoArea}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
-                                                
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>{item.endereco?.nmEndereco}</p>
+                                                        <p>{item.endereco?.regiaoTrabalho?.nmRegiaoTrabalho}</p>
+                                                        <p>{item.endereco?.setorTrabalho?.nmSetorTrabalho}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>{item?.agrupador?.tpAgrupamento}</p>
+                                                        <p>{item?.agrupador?.cdSequencia}</p>
+                                                        <p>{item?.agrupador?.dtAgrupador?.toString()}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>{item.nrPosicaoX}</p>
+                                                        <p>{item.nrPosicaoY}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.nrLado}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.fgStatus}
+                                                </Tabela.Body.Linha.Coluna>
+
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarUf(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteUf(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarAreaArmazenagem(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteAreaArmazenagem(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -209,15 +248,15 @@ export default function Uf(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaUf(registrosPorPagina, paginaAtual - 1);
+                                    carregaAreaArmazenagem(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaUf(registrosPorPagina, paginaAtual + 1);
+                                    carregaAreaArmazenagem(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaUf(registrosPorPagina, pagina);
+                                    carregaAreaArmazenagem(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -229,21 +268,21 @@ export default function Uf(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${UfSelecionado?.nm_nomeuf}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a Unidade Federativa: ${UfSelecionado?.nm_nomeuf}?`} />
+                <Modal.Titulo texto={`Deletar ${AreaArmazenagemSelecionado?.cdIdentificacao}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Área de Armazenagem: ${AreaArmazenagemSelecionado?.cdIdentificacao}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteUf} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteAreaArmazenagem} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalUf
+            <ModalAreaArmazenagem
                 open={openModal}
                 setOpen={setOpenModal}
-                ufSelecionado={UfSelecionado}
-                setUfSelecionado={setUfSelecionado}
-                carregaUfs={carregaUf}
+                areaArmazenagemSelecionado={AreaArmazenagemSelecionado}
+                setAreaArmazenagemSelecionado={setAreaArmazenagemSelecionado}
+                carregaAreaArmazenagems={carregaAreaArmazenagem}
             />
         </>
     );

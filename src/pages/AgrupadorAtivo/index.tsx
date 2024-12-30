@@ -14,17 +14,18 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalUf from "./modal";
+import ModalAgrupadorAtivo from "./modal";
 
-import { deleteUf, getListUf } from "../../services/uf";
-import { ufFiltrosListagem, ufListagem } from "../../types/uf.d";
+import { deleteAgrupadorAtivo, getListAgrupadorAtivo } from "../../services/agrupadorAtivo";
+import { agrupadorAtivoFiltrosListagem, agrupadorAtivoListagem } from "../../types/agrupadorAtivo.d";
+import { formatarData } from "../../utils/data";
 
-export default function Uf(): JSX.Element {
+export default function AgrupadorAtivo(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaUf, setListaUf] = useState<Array<ufListagem>>([]);
+    const [listaAgrupadorAtivo, setListaAgrupadorAtivo] = useState<Array<agrupadorAtivoListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [UfSelecionado, setUfSelecionado] = useState<ufListagem | null>(null);
+    const [AgrupadorAtivoSelecionado, setAgrupadorAtivoSelecionado] = useState<agrupadorAtivoListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +36,7 @@ export default function Uf(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<ufFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<agrupadorAtivoFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +48,11 @@ export default function Uf(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaUf = async (
+    const carregaAgrupadorAtivo = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: ufFiltrosListagem = {
+        let filtros: agrupadorAtivoFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +63,7 @@ export default function Uf(): JSX.Element {
             }
         })();
 
-        const request = () => getListUf(filtros);
+        const request = () => getListAgrupadorAtivo(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +72,7 @@ export default function Uf(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaUf(response.dados.dados);
+            setListaAgrupadorAtivo(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +82,37 @@ export default function Uf(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaUf, 500);
+    const filtroDebounce = useDebounce(carregaAgrupadorAtivo, 500);
 
-    function handleNovoUf(): void {
-        setUfSelecionado(null);
+    function handleNovoAgrupadorAtivo(): void {
+        setAgrupadorAtivoSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleEditarAgrupadorAtivo(dados: agrupadorAtivoListagem): void {
+        setAgrupadorAtivoSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeleteUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleDeleteAgrupadorAtivo(dados: agrupadorAtivoListagem): void {
+        setAgrupadorAtivoSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeleteUf() {
-        if (UfSelecionado == null)
+    async function confirmDeleteAgrupadorAtivo() {
+        if (AgrupadorAtivoSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Uf" });
+        toast({ mensagem: "Deletando Agrupador Ativo" });
 
-        const response = await deleteUf(UfSelecionado.nm_uf);
+        const response = await deleteAgrupadorAtivo(AgrupadorAtivoSelecionado.agrupadorId);
 
         if (response.sucesso) {
-            carregaUf(registrosPorPagina, listaUf?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaAgrupadorAtivo(registrosPorPagina, listaAgrupadorAtivo?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setUfSelecionado(null);
+            setAgrupadorAtivoSelecionado(null);
             toast({
-                mensagem: "Uf deletado com sucesso.",
+                mensagem: "Agrupador Ativo deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +148,25 @@ export default function Uf(): JSX.Element {
 
                 </Box>
 
-                {!listaUf.length ? (
+                {!listaAgrupadorAtivo.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhuma UF Cadastrada"
+                            texto="Nenhum Agrupador Ativo Cadastrado"
                             botao={true}
-                            acao={handleNovoUf}
+                            acao={handleNovoAgrupadorAtivo}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Unidade Federativa - UF"
+                                titulo="Agrupador Ativo"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoUf}
+                                            onClick={handleNovoAgrupadorAtivo}
 
                                         />
                                     </>
@@ -173,26 +174,55 @@ export default function Uf(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Agrupador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Código</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Sequência</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Data Agrupador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Armazenagem</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaUf.map((item: ufListagem) => {
+                                    {listaAgrupadorAtivo.map((item: agrupadorAtivoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.agrupadorId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.agrupadorId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeuf}
+                                                    {item.tpAgrupamento}
                                                 </Tabela.Body.Linha.Coluna>
-                                                
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Setor: {item?.codigo1}</p>
+                                                        <p>Setor: {item?.codigo2}</p>
+                                                        <p>Setor: {item?.codigo3}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    {item?.cdSequencia}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    {formatarData(item.dtAgrupador)}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.areaArmazenagemId}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    {item.fgStatus}
+                                                </Tabela.Body.Linha.Coluna>
+
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarUf(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteUf(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarAgrupadorAtivo(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteAgrupadorAtivo(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -209,15 +239,15 @@ export default function Uf(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaUf(registrosPorPagina, paginaAtual - 1);
+                                    carregaAgrupadorAtivo(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaUf(registrosPorPagina, paginaAtual + 1);
+                                    carregaAgrupadorAtivo(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaUf(registrosPorPagina, pagina);
+                                    carregaAgrupadorAtivo(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -229,21 +259,21 @@ export default function Uf(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${UfSelecionado?.nm_nomeuf}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a Unidade Federativa: ${UfSelecionado?.nm_nomeuf}?`} />
+                <Modal.Titulo texto={`Deletar ${AgrupadorAtivoSelecionado?.cdSequencia}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Agrupador Ativo: ${AgrupadorAtivoSelecionado?.cdSequencia}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteUf} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteAgrupadorAtivo} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalUf
+            <ModalAgrupadorAtivo
                 open={openModal}
                 setOpen={setOpenModal}
-                ufSelecionado={UfSelecionado}
-                setUfSelecionado={setUfSelecionado}
-                carregaUfs={carregaUf}
+                agrupadorAtivoSelecionado={AgrupadorAtivoSelecionado}
+                setAgrupadorAtivoSelecionado={setAgrupadorAtivoSelecionado}
+                carregaAgrupadorAtivos={carregaAgrupadorAtivo}
             />
         </>
     );

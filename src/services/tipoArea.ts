@@ -26,5 +26,5 @@ export const deleteTipoArea = async (id: number) => {
 };
 
 export const getSelectTipoArea = async (pesquisa: tipoAreaFiltroSelect) => {
-  return await postRequest(`/Cadastro/TipoArea/Select`, pesquisa);
+  return await postRequest(`/TipoArea/Select`, pesquisa);
 };

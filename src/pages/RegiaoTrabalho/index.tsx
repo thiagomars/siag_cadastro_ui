@@ -14,17 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import ModalUf from "./modal";
+import ModalRegiaoTrabalho from "./modal";
 
-import { deleteUf, getListUf } from "../../services/uf";
-import { ufFiltrosListagem, ufListagem } from "../../types/uf.d";
+import { deleteRegiaoTrabalho, getListRegiaoTrabalho } from "../../services/regiaoTrabalho";
+import { regiaoTrabalhoFiltrosListagem, regiaoTrabalhoListagem } from "../../types/regiaoTrabalho.d";
 
-export default function Uf(): JSX.Element {
+export default function RegiaoTrabalho(): JSX.Element {
     const toast = useToastLoading();
 
-    const [listaUf, setListaUf] = useState<Array<ufListagem>>([]);
+    const [listaRegiaoTrabalho, setListaRegiaoTrabalho] = useState<Array<regiaoTrabalhoListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [UfSelecionado, setUfSelecionado] = useState<ufListagem | null>(null);
+    const [RegiaoTrabalhoSelecionado, setRegiaoTrabalhoSelecionado] = useState<regiaoTrabalhoListagem | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Uf(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<ufFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<regiaoTrabalhoFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -47,11 +47,11 @@ export default function Uf(): JSX.Element {
         return () => subscription.unsubscribe();
     }, [hookFiltroWatch]);
 
-    const carregaUf = async (
+    const carregaRegiaoTrabalho = async (
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: ufFiltrosListagem = {
+        let filtros: regiaoTrabalhoFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -62,7 +62,7 @@ export default function Uf(): JSX.Element {
             }
         })();
 
-        const request = () => getListUf(filtros);
+        const request = () => getListRegiaoTrabalho(filtros);
         setLoadingListagem(true);
         const response = await request();
 
@@ -71,7 +71,7 @@ export default function Uf(): JSX.Element {
             setTotalRegistros(response.dados.totalRegisters);
             setTotalPaginas(response.dados.totalPages);
 
-            setListaUf(response.dados.dados);
+            setListaRegiaoTrabalho(response.dados.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -81,37 +81,37 @@ export default function Uf(): JSX.Element {
         setLoadingListagem(false);
     };
 
-    const filtroDebounce = useDebounce(carregaUf, 500);
+    const filtroDebounce = useDebounce(carregaRegiaoTrabalho, 500);
 
-    function handleNovoUf(): void {
-        setUfSelecionado(null);
+    function handleNovoRegiaoTrabalho(): void {
+        setRegiaoTrabalhoSelecionado(null);
         setOpenModal(true);
     }
 
-    function handleEditarUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleEditarRegiaoTrabalho(dados: regiaoTrabalhoListagem): void {
+        setRegiaoTrabalhoSelecionado({ ...dados });
         setOpenModal(true);
     }
 
-    function handleDeleteUf(dados: ufListagem): void {
-        setUfSelecionado({ ...dados });
+    function handleDeleteRegiaoTrabalho(dados: regiaoTrabalhoListagem): void {
+        setRegiaoTrabalhoSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
 
-    async function confirmDeleteUf() {
-        if (UfSelecionado == null)
+    async function confirmDeleteRegiaoTrabalho() {
+        if (RegiaoTrabalhoSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Uf" });
+        toast({ mensagem: "Deletando Região de Trabalho" });
 
-        const response = await deleteUf(UfSelecionado.nm_uf);
+        const response = await deleteRegiaoTrabalho(RegiaoTrabalhoSelecionado.regiaoTrabalhoId);
 
         if (response.sucesso) {
-            carregaUf(registrosPorPagina, listaUf?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
+            carregaRegiaoTrabalho(registrosPorPagina, listaRegiaoTrabalho?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
 
-            setUfSelecionado(null);
+            setRegiaoTrabalhoSelecionado(null);
             toast({
-                mensagem: "Uf deletado com sucesso.",
+                mensagem: "Região de Trabalho deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -147,25 +147,25 @@ export default function Uf(): JSX.Element {
 
                 </Box>
 
-                {!listaUf.length ? (
+                {!listaRegiaoTrabalho.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhuma UF Cadastrada"
+                            texto="Nenhum Região de Trabalho Cadastrado"
                             botao={true}
-                            acao={handleNovoUf}
+                            acao={handleNovoRegiaoTrabalho}
                         />
                     </Box>
                 ) : (
                     <Box>
                         <>
                             <Tabela
-                                titulo="Unidade Federativa - UF"
+                                titulo="Região de Trabalho"
                                 botoes={
                                     <>
                                         <Botao
                                             texto="Adicionar"
                                             tipo="sucesso"
-                                            onClick={handleNovoUf}
+                                            onClick={handleNovoRegiaoTrabalho}
 
                                         />
                                     </>
@@ -174,25 +174,30 @@ export default function Uf(): JSX.Element {
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Depósito</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listaUf.map((item: ufListagem) => {
+                                    {listaRegiaoTrabalho.map((item: regiaoTrabalhoListagem) => {
                                         return (
-                                            <Tabela.Body.Linha key={item.id}>
+                                            <Tabela.Body.Linha key={item.regiaoTrabalhoId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.regiaoTrabalhoId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeuf}
+                                                    {item.nmRegiaoTrabalho}
                                                 </Tabela.Body.Linha.Coluna>
-                                                
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    {item.deposito?.nmDeposito}
+                                                </Tabela.Body.Linha.Coluna>
+
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
-                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarUf(item)} />
-                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteUf(item)} />
+                                                        <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarRegiaoTrabalho(item)} />
+                                                        <MenuDropdown.Opcao tipo="excluir" ativo={true} acaoBotao={() => handleDeleteRegiaoTrabalho(item)} />
                                                     </MenuDropdown>
                                                 </Tabela.Body.Linha.Coluna>
                                             </Tabela.Body.Linha>
@@ -209,15 +214,15 @@ export default function Uf(): JSX.Element {
                                 totalPaginas={totalPaginas}
                                 onClickPaginaAnterior={() => {
                                     setPaginaAtual(paginaAtual - 1);
-                                    carregaUf(registrosPorPagina, paginaAtual - 1);
+                                    carregaRegiaoTrabalho(registrosPorPagina, paginaAtual - 1);
                                 }}
                                 onClickPaginaPosterior={() => {
                                     setPaginaAtual(paginaAtual + 1);
-                                    carregaUf(registrosPorPagina, paginaAtual + 1);
+                                    carregaRegiaoTrabalho(registrosPorPagina, paginaAtual + 1);
                                 }}
                                 onClickPagina={(pagina: number) => {
                                     setPaginaAtual(pagina);
-                                    carregaUf(registrosPorPagina, pagina);
+                                    carregaRegiaoTrabalho(registrosPorPagina, pagina);
                                 }}
                             />
                         </>
@@ -229,21 +234,21 @@ export default function Uf(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${UfSelecionado?.nm_nomeuf}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a Unidade Federativa: ${UfSelecionado?.nm_nomeuf}?`} />
+                <Modal.Titulo texto={`Deletar ${RegiaoTrabalhoSelecionado?.nmRegiaoTrabalho}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Região de Trabalho: ${RegiaoTrabalhoSelecionado?.nmRegiaoTrabalho}?`} />
 
                 <Modal.ContainerBotoes>
-                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteUf} />
+                    <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteRegiaoTrabalho} />
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
 
-            <ModalUf
+            <ModalRegiaoTrabalho
                 open={openModal}
                 setOpen={setOpenModal}
-                ufSelecionado={UfSelecionado}
-                setUfSelecionado={setUfSelecionado}
-                carregaUfs={carregaUf}
+                regiaoTrabalhoSelecionado={RegiaoTrabalhoSelecionado}
+                setRegiaoTrabalhoSelecionado={setRegiaoTrabalhoSelecionado}
+                carregaRegiaoTrabalhos={carregaRegiaoTrabalho}
             />
         </>
     );

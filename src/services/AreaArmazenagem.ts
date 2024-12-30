@@ -43,7 +43,7 @@ export const deleteAreaArmazenagem = async (id: number) => {
 export const getSelectAreaArmazenagem = async (
     pesquisa: areaArmazenagemFiltroSelect
 ) => {
-    return await postRequest(`/Cadastro/AreaArmazenagem/Select`, pesquisa);
+    return await postRequest(`/AreaArmazenagem/Select`, pesquisa);
 };
 
 export const getTiposStatusAreaArmazenagem = async () => {
