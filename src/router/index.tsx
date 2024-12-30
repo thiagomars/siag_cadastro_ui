@@ -46,7 +46,7 @@ function Router(): JSX.Element {
                     errorElement: <NotFound />
                 },
                 {
-                    path: "equipamento",
+                    path: "equipamentos",
                     element: <Equipamentos />,
                     errorElement: <NotFound />
                 }
