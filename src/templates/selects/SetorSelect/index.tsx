@@ -3,7 +3,7 @@ import Formulario from "../../../components/Input";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
 import { useEffect, useState } from "react";
 import useToastLoading from "../../../hooks/useToastLoading";
-import { getListaSelectSetorTrabalho, getSelectSetorTrabalho } from "../../../services/setorTrabalho";
+import { getListaSelectSetorTrabalho } from "../../../services/setorTrabalho";
 
 type Props = {
     control: Control<any>;

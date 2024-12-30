@@ -47,5 +47,5 @@ export const getSelectSetorTrabalho = async (
 };
 
 export const getListaSelectSetorTrabalho = async () => {
-    return await getRequest("SetorTrabalho/Select");
+    return await getRequest("/Setor/Select");
 };

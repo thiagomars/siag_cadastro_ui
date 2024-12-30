@@ -9,7 +9,7 @@ import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
 import { SetorSelect } from "../../types/setorTrabalho.d";
 import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
-import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/AreaArmazenagem";
+import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
 import useToastLoading from "../../hooks/useToastLoading";
 import EmptyPage from "../../components/EmptyPage";
 
@@ -21,7 +21,7 @@ export function Equipamentos(): JSX.Element {
     const [modal, setModal] = useState(false);
     const [agrupador, setAgrupador] = useState<corStatusAreaArmazenagem | null>(null);
     const [tiposStatus, setTiposStatus] = useState<Array<corStatusAreaArmazenagem>>([]);
-    const [gaiolas, setGaiolas] = useState<Array<Array<corStatusAreaArmazenagem>>>([]);
+    const [gaiolas, setGaiolas] = useState<Array<Array<Array<corStatusAreaArmazenagem>>>>([]);
     const { control, watch } = useForm<SetorSelect>();
 
     const selectedSetor = watch('setorId')
@@ -50,12 +50,14 @@ export function Equipamentos(): JSX.Element {
     }
 
     async function carregarStatusGaiolas(): Promise<void> {
+        // setGaiolas(dados);
         const request = () => getStatusGaiolas(selectedSetor);
 
         setLoadingListagem(true);
         const response = await request();
         if (response.sucesso) {
             setGaiolas(response.dados);
+            console.log(response.dados);
         } else {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
@@ -98,7 +100,7 @@ export function Equipamentos(): JSX.Element {
                 </div>
             </Box>
             {selectedSetor && (
-                <Box className="flex justify-center h-[30rem]">
+                <Box className="flex justify-center">
                     {
                         loadingListagem ? <Loading /> : (
                             <>
@@ -106,22 +108,30 @@ export function Equipamentos(): JSX.Element {
                                     <EmptyPage
                                         texto="Nenhuma equipamento cadastrado"
                                         acao={() => { }}
-                                    />) : gaiolas.map(listaGaiolas => {
-                                        return (
-                                            <div className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 h-64">
-                                                {
-                                                    listaGaiolas.map(gaiola => (
-                                                        <StatusAgrupador
-                                                            key={`${gaiola.caracol}-${gaiola.gaiola}`}
-                                                            color={gaiola.cor}
-                                                            crossed={gaiola.semPallet}
-                                                            handleOnClick={() => handleOpenModal(gaiola)}
-                                                            isCard />
-                                                    ))
-                                                }
-                                            </div>
-                                        )
-                                    })
+                                    />) : gaiolas.map(listaAvenida =>
+                                    (
+                                        <Box className="flex flex-col justify-center items-center gap-4">
+                                            {
+                                                listaAvenida.map(listaGaiolas =>
+                                                (<div className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
+                                                    {
+                                                        listaGaiolas.map(gaiola => (
+                                                            <StatusAgrupador
+                                                                key={`${gaiola.caracol}-${gaiola.gaiola}`}
+                                                                color={gaiola.cor}
+                                                                crossed={gaiola.semPallet}
+                                                                value={gaiola.gaiola}
+                                                                handleOnClick={() => handleOpenModal(gaiola)}
+                                                                isCard
+                                                                className="h-48 cursor-pointer" />
+                                                        ))
+                                                    }
+                                                </div>
+                                                ))
+                                            }
+                                        </Box>
+                                    )
+                                    )
                                 }
                             </>
                         )
