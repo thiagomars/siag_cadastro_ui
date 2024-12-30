@@ -108,25 +108,29 @@ export function Equipamentos(): JSX.Element {
                                     <EmptyPage
                                         texto="Nenhuma equipamento cadastrado"
                                         acao={() => { }}
-                                    />) : gaiolas.map(listaAvenida =>
+                                    />) : gaiolas.map((listaAvenida, index) =>
                                     (
-                                        <Box className="flex flex-col justify-center items-center gap-4">
+                                        <Box key={index} className="flex flex-col justify-center items-center gap-4">
                                             {
                                                 listaAvenida.map(listaGaiolas =>
-                                                (<div className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
-                                                    {
-                                                        listaGaiolas.map(gaiola => (
-                                                            <StatusAgrupador
-                                                                key={`${gaiola.caracol}-${gaiola.gaiola}`}
-                                                                color={gaiola.cor}
-                                                                crossed={gaiola.semPallet}
-                                                                value={gaiola.gaiola}
-                                                                handleOnClick={() => handleOpenModal(gaiola)}
-                                                                isCard
-                                                                className="h-48 cursor-pointer" />
-                                                        ))
-                                                    }
-                                                </div>
+                                                (<>
+                                                    <Box className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
+                                                        <Box.Header>
+                                                            <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0].caracol}</h1>
+                                                        </Box.Header>
+                                                        {
+                                                            listaGaiolas.map(gaiola => (
+                                                                <StatusAgrupador
+                                                                    key={`${gaiola.caracol}-${gaiola.gaiola}`}
+                                                                    color={gaiola.cor}
+                                                                    crossed={gaiola.semPallet}
+                                                                    value={gaiola.gaiola}
+                                                                    handleOnClick={() => handleOpenModal(gaiola)}
+                                                                    isCard
+                                                                    className="h-48 cursor-pointer" />
+                                                            ))
+                                                        }
+                                                    </Box></>
                                                 ))
                                             }
                                         </Box>
