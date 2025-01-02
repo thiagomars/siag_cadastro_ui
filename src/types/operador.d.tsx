@@ -1,27 +1,42 @@
 import { baseEntity, baseFiltros } from "./baseEntity.d";
 
 export type operadorListagem = {
-    id_operador: number;
-    nm_operador: string;
-    nm_login: string;
-    dt_login: Date;
+    operadorId: number;
+    nmOperador: string;
+    nmCpf: string;
+    nrLocalidade: number;
+    dtLogin: Date;
+    fgFuncao: number;
+    idResponsavel: number;
+    nmLogin: string;
+    nmNfcoperador: string;
 
     dataUltimaAlteracao: Date;
     usuarioUltimaAlteracao: string;
 } & baseEntity;
 
 export type operadorCadastro = {
-    id_operador: number;
-    nm_operador: string;
-    nm_login: string;
-    nm_cpf: string;
+    operadorId: number;
+    nmOperador: string;
+    nmCpf: string;
+    nrLocalidade: number;
+    dtLogin: Date;
+    fgFuncao: number;
+    idResponsavel: number;
+    nmLogin: string;
+    nmNfcoperador: string;
 }
 
 export type operadorForm = {
-    id_operador: number;
-    nm_operador: string;
-    nm_login: string;
-    nm_cpf: string;
+    operadorId: number;
+    nmOperador: string;
+    nmCpf: string;
+    nrLocalidade: number;
+    dtLogin: Date;
+    fgFuncao: number;
+    idResponsavel: number;
+    nmLogin: string;
+    nmNfcoperador: string;
 }
 
 export type operadorFiltrosListagem = {

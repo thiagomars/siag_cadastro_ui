@@ -27,7 +27,7 @@ export default function ModalTurno(props: Props) {
 
     useEffect(() => {
         if (TurnoSelecionado != null) {
-            carregaTurnosPorId(TurnoSelecionado.id_turno.toString());
+            carregaTurnosPorId(TurnoSelecionado.turnoId.toString());
         }
     }, [TurnoSelecionado]);
 
@@ -75,7 +75,7 @@ export default function ModalTurno(props: Props) {
         setTurnoSelecionado(null);
         setId("");
         TurnoReset({
-            cd_turno: ""
+            cdTurno: ""
 
         })
     }
@@ -123,16 +123,16 @@ export default function ModalTurno(props: Props) {
         >
             <Formulario className="col-span-2 grid grid-cols-2">
                 <Formulario.InputTexto
-                    name="cd_turno"
+                    name="cdTurno"
                     label="Turno"
-                    type="text"
+                    type="number"
                     disabled={salvandoTurno}
                     opcional={false}
                     className="col-span-2 mb-2"
                     register={TurnoRegister}
                 />
                 <Formulario.InputTexto
-                    name="dt_inicio"
+                    name="dtInicio"
                     label="Data início"
                     type="date"
                     disabled={salvandoTurno}
@@ -141,9 +141,27 @@ export default function ModalTurno(props: Props) {
                     register={TurnoRegister}
                 />
                 <Formulario.InputTexto
-                    name="dt_fim"
+                    name="dtFim"
                     label="Data fim"
                     type="date"
+                    disabled={salvandoTurno}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TurnoRegister}
+                />
+                <Formulario.InputTexto
+                    name="diaAnterior"
+                    label="Dia anterior"
+                    type="checkbox"
+                    disabled={salvandoTurno}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TurnoRegister}
+                />
+                <Formulario.InputTexto
+                    name="diaSucessor"
+                    label="Dia sucessor"
+                    type="checkbox"
                     disabled={salvandoTurno}
                     opcional={false}
                     className="col-span-2 mb-2"

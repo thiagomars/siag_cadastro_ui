@@ -262,6 +262,16 @@ export default function LayoutDashboard(): JSX.Element {
                 submenus: null,
                 idAlerta: ""
             },
+            {
+                ativo: true,
+                caminho: "/programa",
+                descricao: "Programa",
+                icone: "FaHome",
+                link: "/Programa",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
         ])
     }, [])
 

@@ -6,6 +6,7 @@ import Operador from "../pages/Operador";
 import Parametro from "../pages/Parametro";
 import Turno from "../pages/Turno";
 import Transportadora from "../pages/Transportadora";
+import Programa from "../pages/Programa";
 // import routesImpressoes from "./impressoes";
 
 const NotFound: React.LazyExoticComponent<any> = lazy(
@@ -102,6 +103,11 @@ function Router(): JSX.Element {
                 {
                     path: "transportadora",
                     element: <Transportadora />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "programa",
+                    element: <Programa />,
                     errorElement: <NotFound />
                 },
             ]

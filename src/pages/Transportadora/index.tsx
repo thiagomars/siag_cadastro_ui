@@ -104,7 +104,7 @@ export default function transportadora(): JSX.Element {
 
         toast({ mensagem: "Deletando transportadora" });
 
-        const response = await deleteTransportadora(transportadoraSelecionado.id_transportadora.toString());
+        const response = await deleteTransportadora(transportadoraSelecionado.transportadoraId.toString());
 
         if (response.sucesso) {
             carregatransportadora(registrosPorPagina, listatransportadora?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
@@ -159,7 +159,7 @@ export default function transportadora(): JSX.Element {
                     <Box>
                         <>
                             <Tabela
-                                titulo="transportadoras - transportadora"
+                                titulo="Transportadoras"
                                 botoes={
                                     <>
                                         <Botao
@@ -173,7 +173,12 @@ export default function transportadora(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Empresa</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Nome reduzido</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Logradouro</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Bairro</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>CEP</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>UF</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
@@ -182,31 +187,31 @@ export default function transportadora(): JSX.Element {
                                         return (
                                             <Tabela.Body.Linha key={item.id}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.id_transportadora}
+                                                    {item.transportadoraId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomeempresa}
+                                                    {item.nmNomeEmpresa}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_nomereduzido}
+                                                    {item.nmNomeReduzido}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_logradouro}
+                                                    {item.nmLogradouro}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_bairro}
+                                                    {item.nmBairro}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_cep}
+                                                    {item.nmCep}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_uf}
+                                                    {item.nmUf}
                                                 </Tabela.Body.Linha.Coluna>
                                                 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
@@ -249,8 +254,8 @@ export default function transportadora(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${transportadoraSelecionado?.id_transportadora}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar a transportadora: ${transportadoraSelecionado?.id_transportadora}?`} />
+                <Modal.Titulo texto={`Deletar ${transportadoraSelecionado?.nmNomeEmpresa}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar a transportadora: ${transportadoraSelecionado?.nmNomeEmpresa}?`} />
 
                 <Modal.ContainerBotoes>
                     <Modal.BotaoAcao textoBotao="Deletar" acao={confirmdeleteTransportadora} />

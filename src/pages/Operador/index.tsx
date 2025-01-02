@@ -104,7 +104,7 @@ export default function operador(): JSX.Element {
 
         toast({ mensagem: "Deletando operador" });
 
-        const response = await deleteOperador(operadorSelecionado.id_operador.toString());
+        const response = await deleteOperador(operadorSelecionado.operadorId.toString());
 
         if (response.sucesso) {
             carregaoperador(registrosPorPagina, listaoperador?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
@@ -159,7 +159,7 @@ export default function operador(): JSX.Element {
                     <Box>
                         <>
                             <Tabela
-                                titulo="Operadores - operador"
+                                titulo="Operadores"
                                 botoes={
                                     <>
                                         <Botao
@@ -173,7 +173,8 @@ export default function operador(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Nome operador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Login</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
@@ -182,16 +183,20 @@ export default function operador(): JSX.Element {
                                         return (
                                             <Tabela.Body.Linha key={item.id}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_operador}
+                                                    {item.operadorId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nm_login}
+                                                    {item.nmOperador}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
+                                                    {item.nmLogin}
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                {/* <Tabela.Body.Linha.Coluna>
                                                     {item.dt_login.toString()}
-                                                </Tabela.Body.Linha.Coluna>
+                                                </Tabela.Body.Linha.Coluna> */}
                                                 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
@@ -233,8 +238,8 @@ export default function operador(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${operadorSelecionado?.nm_operador}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar o operador: ${operadorSelecionado?.nm_operador}?`} />
+                <Modal.Titulo texto={`Deletar ${operadorSelecionado?.nmOperador}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o operador: ${operadorSelecionado?.nmOperador}?`} />
 
                 <Modal.ContainerBotoes>
                     <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteoperador} />

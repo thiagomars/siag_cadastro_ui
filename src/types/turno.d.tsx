@@ -1,31 +1,33 @@
 import { baseEntity, baseFiltros } from "./baseEntity.d";
 
 export type TurnoListagem = {
-    id_turno: number;
-    cd_turno: string;
-    dt_inicio: Date;
+    turnoId: number;
+    cdTurno: string;
+    dtInicio: Date;
     dt_fim: Date;
-    diaanterior: boolean;
-    diasucessor: boolean;
+    diaAnterior: boolean;
+    diaSucessor: boolean;
 
     dataUltimaAlteracao: Date;
     usuarioUltimaAlteracao: string;
 } & baseEntity;
 
 export type TurnoCadastro = {
-    id_turno: number;
-    cd_turno: string;
-    dt_inicio: Date;
+    turnoId: number;
+    cdTurno: string;
+    dtInicio: Date;
     dt_fim: Date;
-    diaanterior: boolean;
-    diasucessor: boolean;
+    diaAnterior: boolean;
+    diaSucessor: boolean;
 }
 
 export type TurnoForm = {
-    id_turno: number;
-    cd_turno: string;
-    dt_inicio: Date;
+    turnoId: number;
+    cdTurno: string;
+    dtInicio: Date;
     dt_fim: Date;
+    diaAnterior: boolean;
+    diaSucessor: boolean;
 }
 
 export type TurnoFiltrosListagem = {

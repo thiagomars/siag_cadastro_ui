@@ -27,7 +27,7 @@ export default function Modaloperador(props: Props) {
 
     useEffect(() => {
         if (operadorSelecionado != null) {
-            carregaoperadorsPorId(operadorSelecionado.id_operador.toString());
+            carregaoperadorsPorId(operadorSelecionado.operadorId.toString());
         }
     }, [operadorSelecionado]);
 
@@ -75,8 +75,13 @@ export default function Modaloperador(props: Props) {
         setoperadorSelecionado(null);
         setId("");
         operadorReset({
-            nm_operador: "",
-            nm_login: ""
+        nmOperador: "",
+        nmCpf: "",
+        nrLocalidade: 0,
+        fgFuncao: 0,
+        idResponsavel: 0,
+        nmLogin: "",
+        nmNfcoperador: ""
         })
     }
 
@@ -123,7 +128,7 @@ export default function Modaloperador(props: Props) {
         >
             <Formulario className="col-span-2 grid grid-cols-2">
                 <Formulario.InputTexto
-                    name="nm_operador"
+                    name="nmOperador"
                     label="Nome operador"
                     type="text"
                     disabled={salvandooperador}
@@ -132,7 +137,7 @@ export default function Modaloperador(props: Props) {
                     register={operadorRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_login"
+                    name="nmLogin"
                     label="Login"
                     type="text"
                     disabled={salvandooperador}
@@ -141,8 +146,53 @@ export default function Modaloperador(props: Props) {
                     register={operadorRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_cpf"
+                    name="nmCpf"
                     label="CPF"
+                    type="text"
+                    disabled={salvandooperador}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={operadorRegister}
+                />
+                <Formulario.InputTexto
+                    name="nrLocalidade"
+                    label="Localidade"
+                    type="number"
+                    disabled={salvandooperador}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={operadorRegister}
+                />
+                <Formulario.InputTexto
+                    name="dtLogin"
+                    label="Data login"
+                    type="date"
+                    disabled={salvandooperador}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={operadorRegister}
+                />
+                <Formulario.InputTexto
+                    name="fgFuncao"
+                    label="Fução"
+                    type="number"
+                    disabled={salvandooperador}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={operadorRegister}
+                />
+                <Formulario.InputTexto
+                    name="idResponsavel"
+                    label="Responsável"
+                    type="number"
+                    disabled={salvandooperador}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={operadorRegister}
+                />
+                <Formulario.InputTexto
+                    name="nmNfcoperador"
+                    label="NfCoperador"
                     type="text"
                     disabled={salvandooperador}
                     opcional={false}

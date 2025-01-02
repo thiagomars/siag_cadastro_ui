@@ -159,7 +159,7 @@ export default function parametro(): JSX.Element {
                     <Box>
                         <>
                             <Tabela
-                                titulo="parametros - parametro"
+                                titulo="Parametros"
                                 botoes={
                                     <>
                                         <Botao

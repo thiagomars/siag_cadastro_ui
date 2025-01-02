@@ -1,45 +1,63 @@
 import { baseEntity, baseFiltros } from "./baseEntity.d";
 
 export type TransportadoraListagem = {
-    id_transportadora: number;
-    nm_nomeempresa: string;
-    nm_nomereduzido: string;
-    nm_logradouro: string;
-    nm_bairro: string;
-    nm_cep: string;
-    nm_uf: string;
-    nm_municipio: string;
-    nm_email: string;
-    nm_contato: string;
+    transportadoraId: number;
+    nmNomeEmpresa: string;
+    nmNomeReduzido: string;
+    nmLogradouro: string;
+    nmBairro: string;
+    nmCep: string;
+    nmUf: string;
+    nmMunicipio: string;
+    nmEmail: string;
+    nmContato: string;
+    cdLogin: string;
+    cdCnpj: string;
+    fgSequenciamento: string;
+    fgStatus: number;
+    qtdSequenciais: number;
+    emails: string;
 
     dataUltimaAlteracao: Date;
     usuarioUltimaAlteracao: string;
 } & baseEntity;
 
 export type TransportadoraCadastro = {
-    id_transportadora: number;
-    nm_nomeempresa: string;
-    nm_nomereduzido: string;
-    nm_logradouro: string;
-    nm_bairro: string;
-    nm_cep: string;
-    nm_uf: string;
-    nm_municipio: string;
-    nm_email: string;
-    nm_contato: string;
+    transportadoraId: number;
+    nmNomeEmpresa: string;
+    nmNomeReduzido: string;
+    nmLogradouro: string;
+    nmBairro: string;
+    nmCep: string;
+    nmUf: string;
+    nmMunicipio: string;
+    nmEmail: string;
+    nmContato: string;
+    cdLogin: string;
+    cdCnpj: string;
+    fgSequenciamento: string;
+    fgStatus: number;
+    qtdSequenciais: number;
+    emails: string;
 }
 
 export type TransportadoraForm = {
-    id_transportadora: number;
-    nm_nomeempresa: string;
-    nm_nomereduzido: string;
-    nm_logradouro: string;
-    nm_bairro: string;
-    nm_cep: string;
-    nm_uf: string;
-    nm_municipio: string;
-    nm_email: string;
-    nm_contato: string;
+    transportadoraId: number;
+    nmNomeEmpresa: string;
+    nmNomeReduzido: string;
+    nmLogradouro: string;
+    nmBairro: string;
+    nmCep: string;
+    nmUf: string;
+    nmMunicipio: string;
+    nmEmail: string;
+    nmContato: string;
+    cdLogin: string;
+    cdCnpj: string;
+    fgSequenciamento: string;
+    fgStatus: number;
+    qtdSequenciais: number;
+    emails: string;
 }
 
 export type TransportadoraFiltrosListagem = {

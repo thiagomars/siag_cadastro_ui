@@ -27,7 +27,7 @@ export default function ModalTransportadora(props: Props) {
 
     useEffect(() => {
         if (TransportadoraSelecionado != null) {
-            carregaTransportadorasPorId(TransportadoraSelecionado.id_transportadora.toString());
+            carregaTransportadorasPorId(TransportadoraSelecionado.transportadoraId.toString());
         }
     }, [TransportadoraSelecionado]);
 
@@ -75,12 +75,17 @@ export default function ModalTransportadora(props: Props) {
         setTransportadoraSelecionado(null);
         setId("");
         TransportadoraReset({
-            nm_nomeempresa : "",
-            nm_nomereduzido: "",
-            nm_logradouro: "",
-            nm_bairro: "",
-            nm_cep: "",
-            nm_uf: "",
+            nmNomeEmpresa : "",
+            nmNomeReduzido: "",
+            nmLogradouro: "",
+            nmBairro: "",
+            nmCep: "",
+            nmUf: "",
+            nmMunicipio: "",
+            nmEmail: "",
+            nmContato: "",
+            cdCnpj: "",
+            cdLogin: ""
         })
     }
 
@@ -127,7 +132,7 @@ export default function ModalTransportadora(props: Props) {
         >
             <Formulario className="col-span-2 grid grid-cols-2">
                 <Formulario.InputTexto
-                    name="nm_nomeempresa"
+                    name="nmNomeEmpresa"
                     label="Nome Empresa"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -136,7 +141,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_nomereduzido"
+                    name="nmNomeReduzido"
                     label="Nome Reduzido"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -145,7 +150,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_logradouro"
+                    name="nmLogradouro"
                     label="Logradouro"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -154,7 +159,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_bairro"
+                    name="nmBairro"
                     label="Bairro"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -163,7 +168,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_cep"
+                    name="nmCep"
                     label="CEP"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -172,7 +177,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_uf"
+                    name="nmUf"
                     label="UF"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -181,7 +186,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_municipio"
+                    name="nmMunicipio"
                     label="Municipio"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -190,7 +195,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_email"
+                    name="nmEmail"
                     label="E-mail"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -199,7 +204,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="nm_contato"
+                    name="nmContato"
                     label="Contato"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -208,7 +213,7 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="cd_login"
+                    name="cdLogin"
                     label="Login"
                     type="text"
                     disabled={salvandoTransportadora}
@@ -217,8 +222,44 @@ export default function ModalTransportadora(props: Props) {
                     register={TransportadoraRegister}
                 />
                 <Formulario.InputTexto
-                    name="cd_cnpj"
+                    name="cdCnpj"
                     label="CNJP"
+                    type="text"
+                    disabled={salvandoTransportadora}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TransportadoraRegister}
+                />
+                <Formulario.InputTexto
+                    name="fgSequenciamento"
+                    label="Sequenciamento"
+                    type="text"
+                    disabled={salvandoTransportadora}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TransportadoraRegister}
+                />
+                <Formulario.InputTexto
+                    name="fgStatus"
+                    label="Status"
+                    type="number"
+                    disabled={salvandoTransportadora}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TransportadoraRegister}
+                />
+                <Formulario.InputTexto
+                    name="qtdSequenciais"
+                    label="Qtd Sequenciais"
+                    type="number"
+                    disabled={salvandoTransportadora}
+                    opcional={false}
+                    className="col-span-2 mb-2"
+                    register={TransportadoraRegister}
+                />
+                <Formulario.InputTexto
+                    name="emails"
+                    label="E-mails"
                     type="text"
                     disabled={salvandoTransportadora}
                     opcional={false}
