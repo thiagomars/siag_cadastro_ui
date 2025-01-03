@@ -17,6 +17,8 @@ import Box, { BoxContainer } from "../../components/Box";
 import { deleteCaixa, getListCaixa } from "../../services/caixa";
 import { caixaFiltrosListagem, caixaListagem } from "../../types/caixa.d";
 import { useNavigate } from "react-router-dom";
+import { formatarData } from "../../utils/data";
+import Tag from "../../components/Tag";
 
 export default function Caixa(): JSX.Element {
     const toast = useToastLoading();
@@ -82,14 +84,12 @@ export default function Caixa(): JSX.Element {
     const filtroDebounce = useDebounce(carregaCaixa, 500);
 
     function handleNovoCaixa(): void {
-        setCaixaSelecionado(null);
-        // setOpenModal(true);
+        setCaixaSelecionado(null);        
         navigate("form")
     }
 
     function handleEditarCaixa(dados: caixaListagem): void {
         setCaixaSelecionado({ ...dados });
-        // setOpenModal(true);
         navigate(`form/${dados.caixaId}`);
     }
 
@@ -173,7 +173,10 @@ export default function Caixa(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Descrição</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Código</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Local</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Data</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
@@ -186,7 +189,36 @@ export default function Caixa(): JSX.Element {
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.nmCaixa}
+                                                    <div>
+                                                        <p>{item.nrCaixa}</p>
+                                                        <p>Produto: {item.cdProduto}</p>
+                                                        <p>Cor: {item.cdCor}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Agrupador: {item.agrupador?.cdSequencia}</p>
+                                                        <p>Identificação: {item.pallet.cd_identificacao}</p>
+                                                        <p>Programa: {item.programa.cdPrograma}</p>
+                                                        <p>Pedido: {item.pedidoId}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Embalagem: {formatarData(item.dtEmbalagem, "data")}</p>
+                                                        <p>Sorter: {formatarData(item.dtSorter, "data")}</p>
+                                                        <p>Estufamento: {formatarData(item.dtEstufamento, "data")}</p>
+                                                        <p>Expedição: {formatarData(item.dtExpedicao, "data")}</p>
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    <div>
+                                                        <p>Status: {item.fgStatus}</p>
+                                                        <Tag status={item.fgRfid ? "modifed" : "alert"}>{item.fgRfid ? "FRID" : "Não FRID"}</Tag>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
@@ -229,8 +261,8 @@ export default function Caixa(): JSX.Element {
                 open={confirmacaoDeletar}
                 setOpen={setConfirmacaoDeletar}
             >
-                <Modal.Titulo texto={`Deletar ${CaixaSelecionado?.nmCaixa}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar o Depósito: ${CaixaSelecionado?.nmCaixa}?`} />
+                <Modal.Titulo texto={`Deletar ${CaixaSelecionado?.nrCaixa}`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Depósito: ${CaixaSelecionado?.nrCaixa}?`} />
 
                 <Modal.ContainerBotoes>
                     <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteCaixa} />

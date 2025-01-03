@@ -7,7 +7,7 @@ import { CaixaPedido, FiltroCaixaPedido } from "../../types/caixa.d";
 import { Pedido } from "../../types/pedido.d";
 import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
 import useToastLoading from "../../hooks/useToastLoading";
-import { getListaCaixasPedidos } from "../../services/caixa";
+import { getListCaixa } from "../../services/caixa";
 import Loading from "../../components/Loading";
 
 type Props = {
@@ -32,8 +32,8 @@ export default function ModalAgrupador(props: Props) {
     async function carregarPedido(): Promise<void> {
         if (agrupadorSelecionado == null) { return; }
 
-        const filtro: FiltroCaixaPedido = { idPallet: agrupadorSelecionado.pallet }
-        const request = () => getListaCaixasPedidos(filtro);
+        const filtro = { idPallet: agrupadorSelecionado.pallet }
+        const request = () => getListCaixa(filtro);
 
         setLoading(true);
 

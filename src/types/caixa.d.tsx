@@ -9,21 +9,78 @@ export type CaixaPedido = {
 export type FiltroCaixaPedido = {
     idPallet: Number;
 }
+import { agrupadorAtivoListagem } from "./agrupadorAtivo.d";
 import { baseFiltros } from "./baseEntity.d";
+import { palletListagem } from "./pallet.d";
+import { ProgramaListagem } from "./programa.d";
+import { typeSelectOptions } from "./select.d";
 
 export type caixaListagem = {
     caixaId: number;
-    nmCaixa: string;
+    agrupadorId: number;
+    agrupador: agrupadorAtivoListagem;
+    palletId: number;
+    pallet: palletListagem;
+    programaId: number;
+    programa: ProgramaListagem;
+    pedidoId: number;
+    // pedido: pedidoListagem;
+    cdProduto: string;
+    cdCor: string;
+    cdGrudeTamanho: string;
+    nrCaixa: number;
+    nrPares: number;
+    fgRfid: boolean;
+    fgStatus: number;
+    dtEmbalagem: Date | string;
+    dtSorter: Date | string;
+    dtEstufamento: Date | string;
+    dtExpedicao: Date | string;
+    qtPeso: number;
 };
 
 export type caixaCadastro = {
     caixaId: number;
-    nmCaixa: string;
+    agrupadorId: number;
+    palletId: number;
+    programaId: number;
+    pedidoId: number;
+    cdProduto: string;
+    cdCor: string;
+    cdGrudeTamanho: string;
+    nrCaixa: number;
+    nrPares: number;
+    fgRfid: boolean;
+    fgStatus: number;
+    dtEmbalagem: Date | string;
+    dtSorter: Date | string;
+    dtEstufamento: Date | string;
+    dtExpedicao: Date | string;
+    qtPeso: number;
 }
 
 export type caixaForm = {
     caixaId: number;
-    nmCaixa: string;
+    agrupadorId: number;
+    agrupador: typeSelectOptions;
+    palletId: number;
+    pallet: typeSelectOptions;
+    programaId: number;
+    programa: typeSelectOptions;
+    pedidoId: number;
+    pedido: typeSelectOptions;
+    cdProduto: string;
+    cdCor: string;
+    cdGrudeTamanho: string;
+    nrCaixa: number;
+    nrPares: number;
+    fgRfid: boolean;
+    fgStatus: number;
+    dtEmbalagem: Date | string;
+    dtSorter: Date | string;
+    dtEstufamento: Date | string;
+    dtExpedicao: Date | string;
+    qtPeso: number;
 }
 
 export type caixaFiltrosListagem = {

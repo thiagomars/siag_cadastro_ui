@@ -16,7 +16,7 @@ import Box, { BoxContainer } from "../../components/Box";
 
 import ModalAreaArmazenagem from "./modal";
 
-import { deleteAreaArmazenagem, getListAreaArmazenagem } from "../../services/areaArmazenagem";
+import { deleteAreaArmazenagem, getListAreaArmazenagem } from "../../services/AreaArmazenagem";
 import { areaArmazenagemFiltrosListagem, areaArmazenagemListagem } from "../../types/areaArmazenagem.d";
 
 export default function AreaArmazenagem(): JSX.Element {

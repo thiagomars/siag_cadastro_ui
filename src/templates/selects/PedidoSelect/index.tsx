@@ -4,7 +4,7 @@ import Formulario from "../../../components/Input";
 import useDebounce from "../../../hooks/useDebounce";
 import useToastLoading from "../../../hooks/useToastLoading";
 import { typeSelect, typeSelectResponse } from "../../../types/select.d";
-import { getSelectPallet } from "../../../services/pallet.ts";
+import { getSelectPedido } from "../../../services/pedido.ts";
 
 type Props = {
     control: Control<any>,
@@ -12,7 +12,7 @@ type Props = {
 } & typeSelect;
 
 
-export default function SelectPallet({ children }: { children: React.ReactNode }): JSX.Element {
+export default function SelectPedido({ children }: { children: React.ReactNode }): JSX.Element {
     return (
         <>
             {children}
@@ -28,17 +28,17 @@ const Single = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesPallet("");
+        filtroOpcoesPedido("");
     }, [])
 
-    const filtroOpcoesPallet = useDebounce((pesquisa: string) => carregaSelectPallet(pesquisa), 500);
+    const filtroOpcoesPedido = useDebounce((pesquisa: string) => carregaSelectPedido(pesquisa), 500);
 
-    async function carregaSelectPallet(pesquisa: string): Promise<void> {
+    async function carregaSelectPedido(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectPallet(dados);
+        const response = await getSelectPedido(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -58,13 +58,13 @@ const Single = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelect
-            name={name || "pallet"}
-            label={label || "Pallet"}
+            name={name || "pedido"}
+            label={label || "Pedido"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesPallet}
+            onInputChange={filtroOpcoesPedido}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -82,17 +82,17 @@ const Multi = (props: Props): JSX.Element => {
     const toast = useToastLoading();
 
     useEffect(() => {
-        filtroOpcoesPallet("");
+        filtroOpcoesPedido("");
     }, [])
 
-    const filtroOpcoesPallet = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
+    const filtroOpcoesPedido = useDebounce((pesquisa: string) => carregaSelectDistribuidores(pesquisa), 500);
 
     async function carregaSelectDistribuidores(pesquisa: string): Promise<void> {
         const dados = {
             pesquisa: pesquisa
         };
 
-        const response = await getSelectPallet(dados);
+        const response = await getSelectPedido(dados);
 
         if (response.sucesso) {
             const opcoes = response.dados?.map((tipo: typeSelectResponse) => {
@@ -112,13 +112,13 @@ const Multi = (props: Props): JSX.Element => {
 
     return (
         <Formulario.InputSelectMulti
-            name={name || "pallet"}
-            label={label || "Pallet"}
+            name={name || "pedido"}
+            label={label || "Depósito"}
             subTitulo={subTitulo || ""}
             control={control}
             disabled={disabled}
             opcional={opcional || false}
-            onInputChange={filtroOpcoesPallet}
+            onInputChange={filtroOpcoesPedido}
             options={opcoesSelectDistribuidores}
             className={className}
             isFiltro={isFiltro}
@@ -128,5 +128,5 @@ const Multi = (props: Props): JSX.Element => {
     )
 }
 
-SelectPallet.Single = Single;
-SelectPallet.Multi = Multi;
+SelectPedido.Single = Single;
+SelectPedido.Multi = Multi;

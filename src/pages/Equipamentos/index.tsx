@@ -9,7 +9,7 @@ import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
 import { SetorSelect } from "../../types/setorTrabalho.d";
 import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
-import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
+import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/AreaArmazenagem";
 import useToastLoading from "../../hooks/useToastLoading";
 import EmptyPage from "../../components/EmptyPage";
 

@@ -8,13 +8,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import SelectAgrupador from "../../templates/selects/AgrupadorSelect";
 import useToastLoading from "../../hooks/useToastLoading";
 import { getCaixaById, postCaixas, putCaixa } from "../../services/caixa";
-import { caixaCadastro } from "../../types/caixa.d";
+import { caixaCadastro, caixaForm } from "../../types/caixa.d";
 import SelectPallet from "../../templates/selects/PalletSelect";
 import Botao from "../../components/Button";
+import SelectPrograma from "../../templates/selects/ProgramaSelect";
+import SelectPedido from "../../templates/selects/PedidoSelect";
 
 export default function FormCaixa() {
     const { id } = useParams();
-    const { control, handleSubmit, register, reset, watch, setValue} = useForm();
+    const { control, handleSubmit, register, reset, watch, setValue} = useForm<caixaForm>();
     const hookWatch = watch();
     const toast = useToastLoading();
     const navigate = useNavigate();
@@ -29,14 +31,14 @@ export default function FormCaixa() {
             setCarregandoPagina(false);
     }, []);
 
-    useEffect(() => {
-        const subscription = watch((values, alterField) => {
-            if (alterField.name == "cor")
-                setValue("cdCor", values.cor);
-        });
+    // useEffect(() => {
+    //     const subscription = watch((values, alterField) => {
+    //         if (alterField.name == "cor")
+    //             setValue("cdCor", values.cor);
+    //     });
         
-        return () => subscription.unsubscribe();
-    }, [hookWatch]);
+    //     return () => subscription.unsubscribe();
+    // }, [hookWatch]);
 
     async function carregarDados() {
         setCarregandoPagina(true);
@@ -71,8 +73,9 @@ export default function FormCaixa() {
         let dados: caixaCadastro;
 
         await handleSubmit((dadosForm) => dados = {
+            ...dadosForm,
             caixaId: Number(id),
-            nmCaixa: ""
+
         })();
 
         const request = Number(id) > 0 ? () => putCaixa(dados) : () => postCaixas(dados);
@@ -126,9 +129,21 @@ export default function FormCaixa() {
                         />
                     </SelectPallet>
 
-                    {/* programa */}
+                    <SelectPrograma>
+                        <SelectPrograma.Single
+                            control={control}
+                            className=""
+                            disabled={salvando}
+                        />
+                    </SelectPrograma>
 
-                    {/* pedido */}
+                    <SelectPedido>
+                        <SelectPedido.Single
+                            control={control}
+                            className=""
+                            disabled={salvando}
+                        />
+                    </SelectPedido>
 
                     <Formulario.InputTexto
                         name="cdProduto"
@@ -136,7 +151,7 @@ export default function FormCaixa() {
                         type="text"
                         disabled={salvando}
                         opcional={false}
-                        className=""
+                        className="lg:col-span-1"
                         register={register}
                     />
 
@@ -235,7 +250,7 @@ export default function FormCaixa() {
                         control={control}
                         disabled={salvando}
                         opcional={false}
-                        className=""
+                        className="lg:mb-1.5"
                     />
                 </Formulario>
             </Box>
@@ -243,14 +258,14 @@ export default function FormCaixa() {
             <Box horizontal className="justify-end gap-4">
                 <Botao
                     carregando={salvando}
-                    onClick={() => { }}
+                    onClick={() => navigate("/caixa")}
                     texto="Cancelar"
                     className="w-fit"
                     tipo="padrao"
                 />
                 <Botao
                     carregando={salvando}
-                    onClick={() => { }}
+                    onClick={() => handleSalvar()}
                     texto={"Salvar"}
                     className="w-fit"
                     tipo="sucesso"
