@@ -28,11 +28,11 @@ Tooltip.Content = ({ children, className }: Props) => {
     return (
         <RadixTooltip.Portal>
             <RadixTooltip.Content
-                className={classNames("bg-zinc-600 p-2 rounded shadow-lg mx-4", className)}
+                className={classNames("bg-zinc-600 p-2 rounded shadow-lg mx-4 text-white", className)}
                 sideOffset={5}
             >
                 {children}
-                <RadixTooltip.Arrow className="fill-zinc-600" />
+                <RadixTooltip.Arrow className="fill-zinc-600 text-white" />
             </RadixTooltip.Content>
         </RadixTooltip.Portal>
     )

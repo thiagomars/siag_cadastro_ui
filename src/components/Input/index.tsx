@@ -21,6 +21,7 @@ import verificaPlacaVeiculoValida from "../../utils/verificaPlacaVeiculo";
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Tooltip from "../Tooltip";
 
 type propsField = {
     children?: Array<JSX.Element> | JSX.Element;
@@ -407,6 +408,9 @@ Formulario.InputCor = (props: propsField & propsInput): JSX.Element => {
     const { ...propsField }: propsField = props;
     const { ...propsInput }: propsInput = props;
 
+    if (!propsInput.value)
+        propsInput.value = "#000000";
+
     function handleClickCopyClipboard(event: Event) {
         event.preventDefault();
         copyToClipboard((propsInput.value as string) || "");
@@ -415,34 +419,48 @@ Formulario.InputCor = (props: propsField & propsInput): JSX.Element => {
     return (
         <Formulario.Field {...propsField}>
             <>
-                <input
-                    id={propsInput.isFiltro ? `filtro_${propsField.name}` : propsField.name}
-                    disabled={propsInput.disabled}
-                    name={propsField.name}
-                    type="color"
-                    min={propsInput.min != null && typeof propsInput.min != "object" ? propsInput.min : ""}
-                    max={propsInput.max != null && typeof propsInput.max != "object" ? propsInput.max : ""}
-                    step={propsInput.step}
-                    maxLength={propsInput.maxLength || undefined}
-                    placeholder={propsInput.placeholder}
-                    onKeyDown={propsInput.onKeyDown && propsInput.onKeyDown}
-                    className={`${propsField.icone || propsInput.copyClipboard ? (propsInput.copyClipboard ? "rounded-l-md border-r-0" : "rounded-r-md") : "rounded-md"} w-full border border-gray-300 shadow-sm h-10 disabled:bg-gray-100 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-transparent`}
-                    {...register && register(propsField.name)}
-                    onChange={e => {
-                        if (!propsInput.lowercase) e.target.value = e.target.value.toUpperCase()
+                <div className={`${propsField.icone || propsInput.copyClipboard ? (propsInput.copyClipboard ? "rounded-l-md border-r-0" : "rounded-r-md") : "rounded-md"} w-full border border-gray-300 shadow-sm h-10 disabled:bg-gray-100 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-transparent flex flex-row-reverse overflow-hidden`}>
+                    <input
+                        id={propsInput.isFiltro ? `filtro_${propsField.name}` : propsField.name}
+                        disabled={propsInput.disabled}
+                        name={propsField.name}
+                        type="color"
+                        min={propsInput.min != null && typeof propsInput.min != "object" ? propsInput.min : ""}
+                        max={propsInput.max != null && typeof propsInput.max != "object" ? propsInput.max : ""}
+                        step={propsInput.step}
+                        maxLength={propsInput.maxLength || undefined}
+                        placeholder={propsInput.placeholder}
+                        className="w-full h-full bg-white mx-0.5 cursor-pointer"
+                        onKeyDown={propsInput.onKeyDown && propsInput.onKeyDown}
+                        {...register && register(propsField.name)}
+                        onChange={e => {
+                            if (!propsInput.lowercase) e.target.value = e.target.value.toUpperCase()
 
-                        if (propsInput.type == "number" &&
-                            propsInput.min != null && typeof propsInput.min != "object" &&
-                            Number(e.target.value) < (propsInput.min as number)
-                        )
-                            e.target.value = (Number(e.target.value) * (-1)).toString();
+                            if (propsInput.type == "number" &&
+                                propsInput.min != null && typeof propsInput.min != "object" &&
+                                Number(e.target.value) < (propsInput.min as number)
+                            )
+                                e.target.value = (Number(e.target.value) * (-1)).toString();
 
-                        register && register(propsField.name).onChange(e);
-                    }}
-                    onPaste={(event) => {
-                        !!propsInput.lockedPaste && event.preventDefault();
-                    }}
-                />
+                            register && register(propsField.name).onChange(e);
+                        }}
+                        onPaste={(event) => {
+                            !!propsInput.lockedPaste && event.preventDefault();
+                        }}
+                    />
+                    <Tooltip>
+                        <>
+                            <Tooltip.Trigger>
+                                <button onClick={() => copyToClipboard(propsInput.value?.toString() || "")} className="cursor-copy w-20 shadow-sm shadow-white right-full bg-gray-200 h-full flex items-center justify-center">
+                                    {propsInput.value}
+                                </button>
+                            </Tooltip.Trigger>
+                            <Tooltip.Content>
+                                <p>Copiar para área de transferência</p>
+                            </Tooltip.Content>
+                        </>
+                    </Tooltip>
+                </div>
                 {
                     propsInput.copyClipboard ? (
                         <button onClick={() => handleClickCopyClipboard} className={`rounded-r-md cursor-pointer border border-l-0 border-gray-300 shadow-sm py-2 px-3 ${propsInput.disabled && "bg-gray-100"}`}>

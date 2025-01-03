@@ -120,7 +120,7 @@ const Content = ({ children, flexDirection = "flex-row", className }: PropsConte
 
 Content.Titulo = ({ children }: { children: React.ReactNode | string }) => {
     return (
-        <h2 id="applicant-information-title" className="text-lg leading-6 font-medium text-gray-900">
+        <h2 id="applicant-information-title" className="text-xl leading-6 font-medium text-primary-800">
             {children}
         </h2>
     )
