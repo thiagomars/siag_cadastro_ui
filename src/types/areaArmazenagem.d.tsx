@@ -57,3 +57,14 @@ export type areaArmazenagemFiltrosListagem = {
 export type areaArmazenagemFiltroSelect = {
     pesquisa?: string | null;
 }
+
+export type corStatusAreaArmazenagem = {
+    codigo: number;
+    tipo: string;
+    cor: string;
+    semPallet: boolean;
+    pallet: number;
+    caracol: number;
+    gaiola: number;
+    quantidade: number;
+}

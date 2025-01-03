@@ -1,29 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 
 import ModalAgrupador from "./modal";
 import Loading from "../../components/Loading";
 import Box, { BoxContainer } from "../../components/Box";
 import Formulario from "../../components/Input";
-import SelectSetor from "../../templates/selects/Setor";
+import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
+import { SetorSelect } from "../../types/setorTrabalho.d";
+import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
+import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
+import useToastLoading from "../../hooks/useToastLoading";
+import EmptyPage from "../../components/EmptyPage";
 
 export function Equipamentos(): JSX.Element {
-    const [loading, setLoading] = useState(false);
+    const toast = useToastLoading();
+
+    const [loading, setLoading] = useState(true);
+    const [loadingListagem, setLoadingListagem] = useState(true);
     const [modal, setModal] = useState(false);
-    const [agrupador, setAgrupador] = useState<number | null>(null);
-    const { control } = useForm();
+    const [agrupador, setAgrupador] = useState<corStatusAreaArmazenagem | null>(null);
+    const [tiposStatus, setTiposStatus] = useState<Array<corStatusAreaArmazenagem>>([]);
+    const [gaiolas, setGaiolas] = useState<Array<Array<Array<corStatusAreaArmazenagem>>>>([]);
+    const { control, watch } = useForm<SetorSelect>();
 
-    if (loading) return <Loading />;
+    const selectedSetor = watch('setorId')
 
-    const agrupadores = [...Array(12).keys()].map(i => (
-        <StatusAgrupador value={i} type="ocupado" handleOnClick={() => handleOpenModal(i)} isCard />
+    useEffect(() => {
+        carregarStatus();
+    }, [])
+
+    useEffect(() => {
+        if (selectedSetor) {
+            carregarStatusGaiolas();
+        }
+    }, [selectedSetor])
+
+    async function carregarStatus(): Promise<void> {
+        const request = () => getTiposStatusAreaArmazenagem();
+
+        const response = await request();
+        if (response.sucesso) {
+            setTiposStatus(response.dados);
+        } else {
+            toast({ tipo: response.tipo, mensagem: response.mensagem });
+        }
+
+        setLoading(false)
+    }
+
+    async function carregarStatusGaiolas(): Promise<void> {
+        // setGaiolas(dados);
+        const request = () => getStatusGaiolas(selectedSetor);
+
+        setLoadingListagem(true);
+        const response = await request();
+        if (response.sucesso) {
+            setGaiolas(response.dados);
+            console.log(response.dados);
+        } else {
+            toast({ tipo: response.tipo, mensagem: response.mensagem });
+        }
+
+        setLoadingListagem(false);
+    }
+
+    function handleOpenModal(agrupador: corStatusAreaArmazenagem): void {
+        setModal(true);
+        setAgrupador(agrupador);
+    }
+
+    const listaTiposStatus = tiposStatus.map(status => (
+        <StatusAgrupador key={status.tipo} tipo={status.tipo} crossed={status.semPallet} color={status.cor} />
     ));
 
-    function handleOpenModal(id: number) {
-        setModal(true);
-        setAgrupador(id);
-    }
+    if (loading) return <Loading />;
 
     return (
         <BoxContainer className="h-full">
@@ -40,25 +91,58 @@ export function Equipamentos(): JSX.Element {
                         control={control}
                         opcional={true}
                         className="col-span-1"
-                        isFiltro
                         label="Setor de Trabalho"
                     />
                 </Formulario>
-                <div className="grid grid-cols-2 gap-2 md:grid-cols-7 mt-8 mb-4 place-items-center">
-                    <StatusAgrupador />
-                    <StatusAgrupador value={0} type="livre" />
-                    <StatusAgrupador value={0} type="reservado" />
-                    <StatusAgrupador value={0} type="ocupado" />
-                    <StatusAgrupador value={0} type="manutencao" />
-                    <StatusAgrupador value={10} type="bloqueado" />
-                    <StatusAgrupador value={0} type="desabilitado" />
+                <div className={"grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 place-items-center gap-2 mt-8 mb-4"}>
+                    <StatusAgrupador crossed />
+                    {listaTiposStatus}
                 </div>
             </Box>
-            <Box className="flex justify-center h-[30rem]">
-                <div className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 h-64">
-                    {agrupadores}
-                </div>
-            </Box>
+            {selectedSetor && (
+                <Box className="flex justify-center">
+                    {
+                        loadingListagem ? <Loading /> : (
+                            <>
+                                {!gaiolas.length ? (
+                                    <EmptyPage
+                                        texto="Nenhuma equipamento cadastrado"
+                                        acao={() => { }}
+                                    />) : gaiolas.map((listaAvenida, index) =>
+                                    (
+                                        <Box key={index} className="flex flex-col justify-center items-center gap-4">
+                                            {
+                                                listaAvenida.map(listaGaiolas =>
+                                                (<>
+                                                    <Box className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
+                                                        <Box.Header>
+                                                            <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0].caracol}</h1>
+                                                        </Box.Header>
+                                                        {
+                                                            listaGaiolas.map(gaiola => (
+                                                                <StatusAgrupador
+                                                                    key={`${gaiola.caracol}-${gaiola.gaiola}`}
+                                                                    color={gaiola.cor}
+                                                                    crossed={gaiola.semPallet}
+                                                                    value={gaiola.gaiola}
+                                                                    handleOnClick={() => handleOpenModal(gaiola)}
+                                                                    isCard
+                                                                    className="h-48 cursor-pointer" />
+                                                            ))
+                                                        }
+                                                    </Box></>
+                                                ))
+                                            }
+                                        </Box>
+                                    )
+                                    )
+                                }
+                            </>
+                        )
+                    }
+                </Box>
+            )}
+
             <ModalAgrupador open={modal} setOpen={setModal} agrupadorSelecionado={agrupador} />
         </BoxContainer>
     );

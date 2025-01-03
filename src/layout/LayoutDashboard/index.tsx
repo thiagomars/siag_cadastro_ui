@@ -222,6 +222,56 @@ export default function LayoutDashboard(): JSX.Element {
                 submenus: null,
                 idAlerta: ""
             },
+            {
+                ativo: true,
+                caminho: "/operador",
+                descricao: "Operador",
+                icone: "FaHome",
+                link: "/operador",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/parametro",
+                descricao: "Parametro",
+                icone: "FaHome",
+                link: "/parametro",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/turno",
+                descricao: "Turno",
+                icone: "FaHome",
+                link: "/turno",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/transportadora",
+                descricao: "Transportadora",
+                icone: "FaHome",
+                link: "/Transportadora",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
+            {
+                ativo: true,
+                caminho: "/programa",
+                descricao: "Programa",
+                icone: "FaHome",
+                link: "/Programa",
+                possuiAcesso: true,
+                submenus: null,
+                idAlerta: ""
+            },
         ])
     }, [])
 

@@ -29,3 +29,8 @@ export type setorTrabalhoFiltrosListagem = {
 export type setorTrabalhoFiltroSelect = {
     pesquisa?: string | null;
 }
+
+export type SetorSelect = {
+    setorId: number,
+    setor: string
+}
