@@ -42,7 +42,7 @@ export type enderecoForm = {
     nmEndereco: string;
     qtEstoqueMinimo: number;
     qtEstqueMaximo: number;
-    fgStatus: number;
+    fgStatus: typeSelectOptions;
     tpPreenchimento: number;
 }
 

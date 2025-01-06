@@ -108,7 +108,7 @@ export default function FormCaixa() {
                 <Box.Header>
                     <Box.Header.Content>
                         <Box.Header.Content.Titulo>Caixa</Box.Header.Content.Titulo>
-                        <Box.Header.Content.Subtitulo>{!!id ? "Cadastro de" : "Edição de"} Caixa {!!id && `#${id}`}</Box.Header.Content.Subtitulo>
+                        <Box.Header.Content.Subtitulo>{!!id ? "Cadastro de" : "Edição da"} Caixa {!!id && `#${id}`}</Box.Header.Content.Subtitulo>
                     </Box.Header.Content>
                 </Box.Header>
                 

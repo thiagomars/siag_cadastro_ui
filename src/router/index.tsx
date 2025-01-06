@@ -24,6 +24,8 @@ const AgrupadorAtivo: React.LazyExoticComponent<any> = lazy(() => import("../pag
 const AreaArmazenagem: React.LazyExoticComponent<any> = lazy(() => import("../pages/AreaArmazenagem"));
 const Caixa: React.LazyExoticComponent<any> = lazy(() => import("../pages/Caixa"));
 const CaixaForm: React.LazyExoticComponent<any> = lazy(() => import("../pages/Caixa/form"));
+const Atividade: React.LazyExoticComponent<any> = lazy(() => import("../pages/Atividade"));
+const AtividadeForm: React.LazyExoticComponent<any> = lazy(() => import("../pages/Atividade/form"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
@@ -120,6 +122,16 @@ function Router(): JSX.Element {
                 {
                     path: "caixa/form/:id?",
                     element: <CaixaForm />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "atividade",
+                    element: <Atividade />,
+                    errorElement: <NotFound />
+                },
+                {
+                    path: "atividade/form/:id?",
+                    element: <AtividadeForm />,
                     errorElement: <NotFound />
                 },
             ]
