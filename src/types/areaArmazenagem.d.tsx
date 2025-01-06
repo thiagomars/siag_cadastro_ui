@@ -67,4 +67,11 @@ export type corStatusAreaArmazenagem = {
     caracol: number;
     gaiola: number;
     quantidade: number;
+    status: statusLuz;
+}
+
+export enum statusLuz {
+    Desligado = 0,
+    LuzVermelha = 1,
+    LuzVerde = 2,
 }

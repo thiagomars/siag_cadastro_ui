@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import Tabela from "../../components/Tabela";
 import Modal from "../../components/Modal";
 import Box from "../../components/Box";
-import { CaixaPedido, FiltroCaixaPedido } from "../../types/caixa.d";
+import { CaixaPedido } from "../../types/caixa.d";
 import { Pedido } from "../../types/pedido.d";
 import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
 import useToastLoading from "../../hooks/useToastLoading";
-import { getListCaixa } from "../../services/caixa";
+import { getListaCaixaPedido } from "../../services/caixa";
 import Loading from "../../components/Loading";
 
 type Props = {
@@ -32,8 +32,7 @@ export default function ModalAgrupador(props: Props) {
     async function carregarPedido(): Promise<void> {
         if (agrupadorSelecionado == null) { return; }
 
-        const filtro = { idPallet: agrupadorSelecionado.pallet }
-        const request = () => getListCaixa(filtro);
+        const request = () => getListaCaixaPedido(agrupadorSelecionado.pallet);
 
         setLoading(true);
 
