@@ -19,7 +19,7 @@ export const getListCaixa = async (filtros: caixaFiltrosListagem) => {
 };
 
 export const getListaCaixaPedido = async (idPallet: number) => {
-    return await getRequest(`/caixa-pedido/${idPallet}`);
+    return await getRequest(`/Caixa/caixa-pedido/${idPallet}`);
 };
 
 export const getImpressaoCaixa = async (filtros: caixaFiltrosListagem) => {

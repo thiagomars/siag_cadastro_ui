@@ -1,9 +1,9 @@
 export type Pedido = {
     idPedido: string;
-    codigoPedido: string;
-    codigoLote: string;
-    box: string;
-    quantidadeCaixas: number;
+    cdPedido: string;
+    cdLote: string;
+    cdBox: string;
+    nrCaixas: number;
 }
 
 export type pedidoFiltroSelect = {

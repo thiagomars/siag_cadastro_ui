@@ -8,12 +8,13 @@ import Formulario from "../../components/Input";
 import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
 import { SetorSelect } from "../../types/setorTrabalho.d";
-import { corStatusAreaArmazenagem, statusLuz } from "../../types/areaArmazenagem.d";
-import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
+import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
+import { getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
 import useToastLoading from "../../hooks/useToastLoading";
 import EmptyPage from "../../components/EmptyPage";
 import Botao from "../../components/Button";
 import { desligarLuzesVerdes, desligarLuzesVermelhas, ligarLuzesVermelhas } from "../../services/luzes";
+import { dados } from "./dados";
 
 export function Equipamentos(): JSX.Element {
     const toast = useToastLoading();
@@ -30,6 +31,7 @@ export function Equipamentos(): JSX.Element {
 
     useEffect(() => {
         carregarStatus();
+        carregarStatusGaiolas();
     }, [])
 
     useEffect(() => {
@@ -52,19 +54,20 @@ export function Equipamentos(): JSX.Element {
     }
 
     async function carregarStatusGaiolas(): Promise<void> {
-        // setGaiolas(dados);
-        const request = () => getStatusGaiolas(selectedSetor);
-
-        setLoadingListagem(true);
-        const response = await request();
-        if (response.sucesso) {
-            setGaiolas(response.dados);
-            console.log(response.dados);
-        } else {
-            toast({ tipo: response.tipo, mensagem: response.mensagem });
-        }
-
+        setGaiolas(dados);
         setLoadingListagem(false);
+        // const request = () => getStatusGaiolas(selectedSetor);
+
+        // setLoadingListagem(true);
+        // const response = await request();
+        // if (response.sucesso) {
+        //     setGaiolas(response.dados);
+        //     console.log(response.dados);
+        // } else {
+        //     toast({ tipo: response.tipo, mensagem: response.mensagem });
+        // }
+
+        // setLoadingListagem(false);
     }
 
     async function handleLigarLuzesVermelhas(): Promise<void> {
@@ -131,7 +134,7 @@ export function Equipamentos(): JSX.Element {
                         className="col-span-1"
                         label="Setor de Trabalho"
                     />
-                    {selectedSetor &&
+                    {gaiolas.length &&
                         <div className="col-span-3 flex gap-3">
                             <Botao texto="Ligar Luzes Vermelhas" tipo="salvar" onClick={handleLigarLuzesVermelhas} />
                             <Botao texto="Desligar Luzes Vermelhas" tipo="erro" onClick={handleDesligarLuzesVermelhas} />
@@ -144,10 +147,10 @@ export function Equipamentos(): JSX.Element {
                     {listaTiposStatus}
                 </div>
             </Box>
-            {selectedSetor && (
+            {(selectedSetor || true) && (
                 <Box className="flex justify-center">
                     {
-                        !loadingListagem ? <Loading /> : (
+                        loadingListagem ? <Loading /> : (
                             <>
                                 {!gaiolas.length ? (
                                     <EmptyPage
@@ -159,7 +162,7 @@ export function Equipamentos(): JSX.Element {
                                             {
                                                 listaAvenida.map(listaGaiolas =>
                                                 (<>
-                                                    <Box className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
+                                                    <Box className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 place-items-center gap-4 w-full">
                                                         <Box.Header>
                                                             <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0].caracol}</h1>
                                                         </Box.Header>
@@ -170,8 +173,10 @@ export function Equipamentos(): JSX.Element {
                                                                     color={gaiola.cor}
                                                                     crossed={gaiola.semPallet}
                                                                     gaiola={gaiola.gaiola}
-                                                                    caracol={(index + 1) * 100 + gaiola.gaiola}
+                                                                    caracol={(index + 1) * 100 + gaiola.caracol}
                                                                     handleOnClick={() => handleOpenModal(gaiola)}
+                                                                    statusVerde={gaiola.statusVerde}
+                                                                    statusVermelho={gaiola.statusVermelho}
                                                                     isCard
                                                                     className="h-48 cursor-pointer" />
                                                             ))
@@ -186,14 +191,6 @@ export function Equipamentos(): JSX.Element {
                             </>
                         )
                     }
-                    <StatusAgrupador
-                        key={`${10}-${2}`}
-                        gaiola={1}
-                        caracol={(0 + 1) * 100 + 1}
-                        handleOnClick={() => { }}
-                        status={statusLuz.Desligado}
-                        isCard
-                        className="h-48 cursor-pointer" />
                 </Box>
             )}
             <ModalAgrupador open={modal} setOpen={setModal} agrupadorSelecionado={agrupador} />
