@@ -7,7 +7,7 @@ type Props = {
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
     carregando?: boolean,
     disabled?: boolean,
-    tipo?: "erro" | "sucesso" | "padrao" | "aviso" | "impressao" | "informacao", //erro, aviso, sucesso, padrao, informacao
+    tipo?: "erro" | "sucesso" | "padrao" | "aviso" | "impressao" | "informacao" | "salvar" | "inativo", //erro, aviso, sucesso, padrao, informacao
     texto?: string | JSX.Element,
     icone?: JSX.Element,
     className?: string,
@@ -37,12 +37,14 @@ const Botao = forwardRef((props: Props, _) => {
             className={classNames("relative flex flex-row gap-2 items-center shadow-md text-base font-medium rounded-md disabled:cursor-not-allowed",
                 carregando && "grayscale-[50%] cursor-not-allowed ",
                 tipo == "sucesso" && "bg-gradient-to-r from-primary-800/90 to-primary-500/90 hover:from-primary-800 hover:to-primary-500 focus:ring-primary-500 text-white",
+                tipo == "salvar" && "bg-gradient-to-r from-green-600/90 to-green-500/90 hover:from-green-600 hover:to-green-500 focus:ring-green-500 text-white",
                 tipo == "erro" && "bg-red-600 hover:bg-red-700 focus:ring-red-500 text-white",
                 tipo == "padrao" && "border hover:bg-gray-50 hover:ring-white/30 focus:ring-white/10 border-gray-300 text-gray-700",
                 tipo == "aviso" && "bg-gradient-to-r from-yellow-600/80 to-yellow-500 hover:from-yellow-600 hover:to-yellow-500 focus:ring-yellow-500 text-white",
                 tipo == "impressao" && "bg-gray-600 hover:bg-gray-500 focus:ring-gray-500 text-white",
                 tipo == "informacao" && "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white",
-                tipo!=null && "px-4 py-2 shadow-sm",
+                tipo == "inativo" && "bg-gray-400 hover:bg-gray-500 focus:ring-gray-400 text-white",
+                tipo != null && "px-4 py-2 shadow-sm",
                 className
             )}
             disabled={carregando || disabled}
@@ -63,7 +65,7 @@ const Botao = forwardRef((props: Props, _) => {
                 {!!texto && <span className={classNames(classNameText)}>{texto}</span>}
                 {children}
 
-                
+
             </div>
         </button>
 
