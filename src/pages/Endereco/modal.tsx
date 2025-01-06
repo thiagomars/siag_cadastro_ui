@@ -6,11 +6,13 @@ import ModalLateral from "../../components/ModalLateral";
 import useToastLoading from "../../hooks/useToastLoading";
 import { getEnderecoById, postEnderecos, putEndereco } from "../../services/endereco";
 import { baseAlteracoes } from "../../types/baseEntity.d";
-import { enderecoCadastro, enderecoListagem } from "../../types/endereco.d";
+import { enderecoCadastro, enderecoForm, enderecoListagem } from "../../types/endereco.d";
 import SelectRegiaoTrabalho from "../../templates/selects/RegiaoTrabalhoSelect";
 import SelectSetorTrabalho from "../../templates/selects/SetorTrabalhoSelect";
 import SelectTipoEndereco from "../../templates/selects/TipoEnderecoSelect";
 import { FaCube, FaCubes } from "react-icons/fa6";
+import SelectStatusEndereco from "../../templates/selects/StatusEnderecoSelect";
+import { typeSelectOptions } from "../../types/select.d";
 
 type Props = {
     open: boolean;
@@ -25,7 +27,7 @@ export default function ModalEndereco(props: Props) {
 
     const [id, setId] = useState(0);
     const [salvandoEndereco, setSalvandoEndereco] = useState<boolean>(false);
-    const { register: EnderecoRegister, handleSubmit: EnderecoSubmit, reset: EnderecoReset, control: EnderecoControl } = useForm<enderecoCadastro>();
+    const { register: EnderecoRegister, handleSubmit: EnderecoSubmit, reset: EnderecoReset, control: EnderecoControl } = useForm<enderecoForm>();
     const toast = useToastLoading();
     const [alteracoes, setAlteracoes] = useState<baseAlteracoes | null>();
 
@@ -51,7 +53,10 @@ export default function ModalEndereco(props: Props) {
 
         let dados: enderecoCadastro;
 
-        await EnderecoSubmit((dadosForm) => dados = { ...dadosForm })();
+        await EnderecoSubmit((dadosForm) => dados = {
+            ...dadosForm,
+            fgStatus: (dadosForm.fgStatus as typeSelectOptions)?.value,
+        })();
 
         const request = id > 0 ? () => putEndereco(dados) : () => postEnderecos(dados);
 
@@ -81,7 +86,7 @@ export default function ModalEndereco(props: Props) {
         EnderecoReset({
             nmEndereco: "",
             enderecoId: 0,
-            fgStatus: 0,
+            fgStatus: { },
             qtEstoqueMinimo: 0,
             qtEstqueMaximo: 0,
             regiaoTrabalhoId: 0,
@@ -206,15 +211,15 @@ export default function ModalEndereco(props: Props) {
                     icone={<FaCubes className="fill-gray-600"/>}
                 />
 
-                <Formulario.InputNumber
-                    name="fgStatus"
-                    label="Status"
-                    disabled={salvandoEndereco}
-                    opcional={false}
-                    control={EnderecoControl}
-                    decimalPlaces={0}
-                    className="lg:col-span-2"
-                />
+                <SelectStatusEndereco>
+                    <SelectStatusEndereco.Single 
+                        control={EnderecoControl}
+                        disabled={salvandoEndereco}
+                        name="fgStatus"
+                        opcional={false}
+                        className="lg:col-span-2"
+                    />
+                </SelectStatusEndereco>
                 
                 <Formulario.InputNumber
                     name="tpPreenchimento"

@@ -1,3 +1,9 @@
+import { agrupadorAtivoListagem } from "./agrupadorAtivo.d";
+import { baseFiltros } from "./baseEntity.d";
+import { palletListagem } from "./pallet.d";
+import { ProgramaListagem } from "./programa.d";
+import { typeSelectOptions } from "./select.d";
+
 export type CaixaPedido = {
     codigo: string;
     produto: string;
@@ -9,11 +15,6 @@ export type CaixaPedido = {
 export type FiltroCaixaPedido = {
     idPallet: Number;
 }
-import { agrupadorAtivoListagem } from "./agrupadorAtivo.d";
-import { baseFiltros } from "./baseEntity.d";
-import { palletListagem } from "./pallet.d";
-import { ProgramaListagem } from "./programa.d";
-import { typeSelectOptions } from "./select.d";
 
 export type caixaListagem = {
     caixaId: number;

@@ -126,7 +126,7 @@ export default function ModalUf(props: Props) {
                     name="nm_uf"
                     label="UF"
                     type="text"
-                    disabled={salvandoUf}
+                    disabled={salvandoUf || !!id}
                     opcional={false}
                     className="col-span-2 mb-2"
                     register={UfRegister}
