@@ -131,7 +131,7 @@ export function Equipamentos(): JSX.Element {
                         className="col-span-1"
                         label="Setor de Trabalho"
                     />
-                    {gaiolas.length &&
+                    {selectedSetor && gaiolas.length &&
                         <div className="col-span-3 flex gap-3">
                             <Botao texto="Ligar Luzes Vermelhas" tipo="salvar" onClick={handleLigarLuzesVermelhas} />
                             <Botao texto="Desligar Luzes Vermelhas" tipo="erro" onClick={handleDesligarLuzesVermelhas} />
