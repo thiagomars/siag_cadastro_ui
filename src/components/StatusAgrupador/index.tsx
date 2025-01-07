@@ -68,7 +68,7 @@ export default function StatusAgrupador({ gaiola, caracol, color, tipo, isCard =
                     <div
                         className={classNames(
                             'size-2 rounded-full',
-                            statusVerdeGaiola ? 'bg-green-600' : 'bg-green-900',
+                            statusVerdeGaiola ? 'bg-green-500' : 'bg-green-800',
                         )}>
                     </div>
                     <div

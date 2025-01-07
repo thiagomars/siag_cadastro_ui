@@ -9,12 +9,11 @@ import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
 import { SetorSelect } from "../../types/setorTrabalho.d";
 import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
-import { getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
+import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
 import useToastLoading from "../../hooks/useToastLoading";
 import EmptyPage from "../../components/EmptyPage";
 import Botao from "../../components/Button";
 import { desligarLuzesVerdes, desligarLuzesVermelhas, ligarLuzesVermelhas } from "../../services/luzes";
-import { dados } from "./dados";
 
 export function Equipamentos(): JSX.Element {
     const toast = useToastLoading();
@@ -54,20 +53,18 @@ export function Equipamentos(): JSX.Element {
     }
 
     async function carregarStatusGaiolas(): Promise<void> {
-        setGaiolas(dados);
+        const request = () => getStatusGaiolas(selectedSetor);
+
+        setLoadingListagem(true);
+        const response = await request();
+        if (response.sucesso) {
+            setGaiolas(response.dados);
+            console.log(response.dados);
+        } else {
+            toast({ tipo: response.tipo, mensagem: response.mensagem });
+        }
+
         setLoadingListagem(false);
-        // const request = () => getStatusGaiolas(selectedSetor);
-
-        // setLoadingListagem(true);
-        // const response = await request();
-        // if (response.sucesso) {
-        //     setGaiolas(response.dados);
-        //     console.log(response.dados);
-        // } else {
-        //     toast({ tipo: response.tipo, mensagem: response.mensagem });
-        // }
-
-        // setLoadingListagem(false);
     }
 
     async function handleLigarLuzesVermelhas(): Promise<void> {
@@ -147,7 +144,7 @@ export function Equipamentos(): JSX.Element {
                     {listaTiposStatus}
                 </div>
             </Box>
-            {(selectedSetor || true) && (
+            {selectedSetor && (
                 <Box className="flex justify-center">
                     {
                         loadingListagem ? <Loading /> : (
