@@ -71,10 +71,10 @@ export default function ModalAgrupador(props: Props) {
                         <Tabela.Body>
                             {pedidos.map(pedido => (
                                 <Tabela.Body.Linha key={pedido.idPedido}>
-                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.codigoLote}</Tabela.Body.Linha.Coluna>
-                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.box}</Tabela.Body.Linha.Coluna>
-                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.codigoPedido}</Tabela.Body.Linha.Coluna>
-                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.quantidadeCaixas}</Tabela.Body.Linha.Coluna>
+                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.cdLote}</Tabela.Body.Linha.Coluna>
+                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.cdBox}</Tabela.Body.Linha.Coluna>
+                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.cdPedido}</Tabela.Body.Linha.Coluna>
+                                    <Tabela.Body.Linha.Coluna alignText="text-center">{pedido.nrCaixas}</Tabela.Body.Linha.Coluna>
                                 </Tabela.Body.Linha>
                             ))}
                         </Tabela.Body>

@@ -8,7 +8,7 @@ import Formulario from "../../components/Input";
 import SelectSetor from "../../templates/selects/SetorSelect";
 import StatusAgrupador from "../../components/StatusAgrupador";
 import { SetorSelect } from "../../types/setorTrabalho.d";
-import { corStatusAreaArmazenagem, statusLuz } from "../../types/areaArmazenagem.d";
+import { corStatusAreaArmazenagem } from "../../types/areaArmazenagem.d";
 import { getStatusGaiolas, getTiposStatusAreaArmazenagem } from "../../services/areaArmazenagem";
 import useToastLoading from "../../hooks/useToastLoading";
 import EmptyPage from "../../components/EmptyPage";
@@ -30,6 +30,7 @@ export default function Equipamentos() {
 
     useEffect(() => {
         carregarStatus();
+        carregarStatusGaiolas();
     }, [])
 
     useEffect(() => {
@@ -52,7 +53,6 @@ export default function Equipamentos() {
     }
 
     async function carregarStatusGaiolas(): Promise<void> {
-        // setGaiolas(dados);
         const request = () => getStatusGaiolas(selectedSetor);
 
         setLoadingListagem(true);
@@ -131,7 +131,7 @@ export default function Equipamentos() {
                         className="col-span-1"
                         label="Setor de Trabalho"
                     />
-                    {selectedSetor &&
+                    {(selectedSetor && gaiolas.length > 0) &&
                         <div className="col-span-3 flex gap-3">
                             <Botao texto="Ligar Luzes Vermelhas" tipo="salvar" onClick={handleLigarLuzesVermelhas} />
                             <Botao texto="Desligar Luzes Vermelhas" tipo="erro" onClick={handleDesligarLuzesVermelhas} />
@@ -147,7 +147,7 @@ export default function Equipamentos() {
             {selectedSetor && (
                 <Box className="flex justify-center">
                     {
-                        !loadingListagem ? <Loading /> : (
+                        loadingListagem ? <Loading /> : (
                             <>
                                 {!gaiolas.length ? (
                                     <EmptyPage
@@ -159,7 +159,7 @@ export default function Equipamentos() {
                                             {
                                                 listaAvenida.map(listaGaiolas =>
                                                 (<>
-                                                    <Box className="grid grid-cols-4 lg:grid-cols-12 place-items-center gap-4 w-full">
+                                                    <Box className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 place-items-center gap-4 w-full">
                                                         <Box.Header>
                                                             <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0].caracol}</h1>
                                                         </Box.Header>
@@ -170,8 +170,10 @@ export default function Equipamentos() {
                                                                     color={gaiola.cor}
                                                                     crossed={gaiola.semPallet}
                                                                     gaiola={gaiola.gaiola}
-                                                                    caracol={(index + 1) * 100 + gaiola.gaiola}
+                                                                    caracol={(index + 1) * 100 + gaiola.caracol}
                                                                     handleOnClick={() => handleOpenModal(gaiola)}
+                                                                    statusVerde={gaiola.statusVerde}
+                                                                    statusVermelho={gaiola.statusVermelho}
                                                                     isCard
                                                                     className="h-48 cursor-pointer" />
                                                             ))
@@ -186,14 +188,6 @@ export default function Equipamentos() {
                             </>
                         )
                     }
-                    <StatusAgrupador
-                        key={`${10}-${2}`}
-                        gaiola={1}
-                        caracol={(0 + 1) * 100 + 1}
-                        handleOnClick={() => { }}
-                        status={statusLuz.Desligado}
-                        isCard
-                        className="h-48 cursor-pointer" />
                 </Box>
             )}
             <ModalAgrupador open={modal} setOpen={setModal} agrupadorSelecionado={agrupador} />
