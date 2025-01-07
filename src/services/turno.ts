@@ -9,7 +9,7 @@ export const getListTurno = async (filtros: TurnoFiltrosListagem) => {
   return await postRequest(`/Turno/Listagem`, filtros);
 };
 
-export const getTurnoById = async (id: string) => {
+export const getTurnoById = async (id: number) => {
   return await getRequest(`/Turno/${id}`);
 };
 
@@ -17,7 +17,7 @@ export const putTurno = async (dados: TurnoCadastro) => {
   return await putRequest(`/Turno`, dados);
 };
 
-export const deleteTurno = async (id: string) => {
+export const deleteTurno = async (id: number) => {
     return await deleteRequest(`/Turno/${id}`);
 };
 

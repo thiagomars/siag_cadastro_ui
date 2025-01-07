@@ -1,7 +1,7 @@
 import { agrupadorAtivoListagem } from "./agrupadorAtivo.d";
 import { baseFiltros } from "./baseEntity.d";
 import { enderecoListagem } from "./endereco.d";
-import { typeSelectOptions } from "./select.d";
+import { typeSelectOptions, typeSelectResponse } from "./select.d";
 import { tipoAreaListagem } from "./tipoArea.d";
 
 export type areaArmazenagemListagem = {
@@ -11,13 +11,14 @@ export type areaArmazenagemListagem = {
     enderecoId: number;
     endereco: enderecoListagem;
     agrupadorId: number;
-    agrupador: agrupadorAtivoListagem;
+    agrupadorAtivo: agrupadorAtivoListagem;
     nrPosicaoX: number;
     nrPosicaoY: number;
     nrLado: number;
-    fgStatus: number;
+    fgStatus: typeSelectResponse;
     cdIdentificacao: string;
     agrupadorReservadoId: number;
+    agrupadorReservado: agrupadorAtivoListagem;
 };
 
 export type areaArmazenagemCadastro = {
@@ -28,7 +29,7 @@ export type areaArmazenagemCadastro = {
     nrPosicaoX: number;
     nrPosicaoY: number;
     nrLado: number;
-    fgStatus: number;
+    fgStatus: typeSelectOptions;
     cdIdentificacao: string;
     agrupadorReservadoId: number;
 }

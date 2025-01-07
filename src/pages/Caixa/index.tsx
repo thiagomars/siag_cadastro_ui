@@ -102,7 +102,7 @@ export default function Caixa(): JSX.Element {
         if (CaixaSelecionado == null)
             return;
 
-        toast({ mensagem: "Deletando Depósito" });
+        toast({ mensagem: "Deletando Caixa" });
 
         const response = await deleteCaixa(CaixaSelecionado.caixaId);
 
@@ -111,7 +111,7 @@ export default function Caixa(): JSX.Element {
 
             setCaixaSelecionado(null);
             toast({
-                mensagem: "Depósito deletado com sucesso.",
+                mensagem: "Caixa deletado com sucesso.",
                 tipo: response.tipo,
             });
         } else {
@@ -150,7 +150,7 @@ export default function Caixa(): JSX.Element {
                 {!listaCaixa.length ? (
                     <Box>
                         <EmptyPage
-                            texto="Nenhum Depósito Cadastrado"
+                            texto="Nenhuma Caixa Cadastrada"
                             botao={true}
                             acao={handleNovoCaixa}
                         />
@@ -159,7 +159,7 @@ export default function Caixa(): JSX.Element {
                     <Box>
                         <>
                             <Tabela
-                                titulo="Depósito"
+                                titulo="Caixa"
                                 botoes={
                                     <>
                                         <Botao
@@ -262,7 +262,7 @@ export default function Caixa(): JSX.Element {
                 setOpen={setConfirmacaoDeletar}
             >
                 <Modal.Titulo texto={`Deletar ${CaixaSelecionado?.nrCaixa}`} />
-                <Modal.Descricao texto={`Deseja realmente deletar o Depósito: ${CaixaSelecionado?.nrCaixa}?`} />
+                <Modal.Descricao texto={`Deseja realmente deletar o Caixa: ${CaixaSelecionado?.nrCaixa}?`} />
 
                 <Modal.ContainerBotoes>
                     <Modal.BotaoAcao textoBotao="Deletar" acao={confirmDeleteCaixa} />

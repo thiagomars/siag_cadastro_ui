@@ -121,6 +121,10 @@ export default function ModalEndereco(props: Props) {
                     value: response.dados?.tipoEndereco?.tipoEnderecoId,
                     label: response.dados?.tipoEndereco?.tipoEnderecoId + " - " + response.dados?.tipoEndereco?.nmTipoEndereco
                 },
+                fgStatus: {
+                    value: response.dados?.fgStatus?.id,
+                    label: response.dados?.fgStatus?.descricao,
+                }
             });
         } else {
             toast({

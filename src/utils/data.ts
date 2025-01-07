@@ -1,4 +1,4 @@
-import * as moment from 'moment'
+import moment from "moment";
 
 export const inicioDia = (data: string | Date | null | undefined): string | Date | null | undefined => {
     try {

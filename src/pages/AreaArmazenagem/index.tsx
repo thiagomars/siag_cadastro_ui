@@ -16,8 +16,9 @@ import Box, { BoxContainer } from "../../components/Box";
 
 import ModalAreaArmazenagem from "./modal";
 
-import { deleteAreaArmazenagem, getListAreaArmazenagem } from "../../services/AreaArmazenagem";
+import { deleteAreaArmazenagem, getListAreaArmazenagem } from "../../services/areaArmazenagem";
 import { areaArmazenagemFiltrosListagem, areaArmazenagemListagem } from "../../types/areaArmazenagem.d";
+import { formatarData } from "../../utils/data";
 
 export default function AreaArmazenagem(): JSX.Element {
     const toast = useToastLoading();
@@ -172,12 +173,11 @@ export default function AreaArmazenagem(): JSX.Element {
                                 }
                             >
                                 <Tabela.Header>
-                                    <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Identificação</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Endereço</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Agrupador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Agrupador ativo</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Agrupador reservado</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Posição</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Lado</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
@@ -187,14 +187,8 @@ export default function AreaArmazenagem(): JSX.Element {
                                         return (
                                             <Tabela.Body.Linha key={item.agrupadorId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.agrupadorId}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    <div>
-                                                        <p>{item.cdIdentificacao}</p>
-                                                        <p>{item.tipoArea?.nmTipoArea}</p>
-                                                    </div>
+                                                    <p className="font-medium">{item.cdIdentificacao}</p>
+                                                    <p>Tipo área: {item.tipoArea?.nmTipoArea}</p>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
@@ -207,25 +201,30 @@ export default function AreaArmazenagem(): JSX.Element {
 
                                                 <Tabela.Body.Linha.Coluna>
                                                     <div>
-                                                        <p>{item?.agrupador?.tpAgrupamento}</p>
-                                                        <p>{item?.agrupador?.cdSequencia}</p>
-                                                        <p>{item?.agrupador?.dtAgrupador?.toString()}</p>
+                                                        <p>{item?.agrupadorAtivo?.agrupadorId}</p>
+                                                        <p>{item?.agrupadorAtivo?.tpAgrupamento}</p>
+                                                        {!!item?.agrupadorAtivo?.dtAgrupador && <p>{formatarData(item?.agrupadorAtivo?.dtAgrupador, "data")}</p>}
                                                     </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
                                                     <div>
-                                                        <p>{item.nrPosicaoX}</p>
-                                                        <p>{item.nrPosicaoY}</p>
+                                                        <p>{item?.agrupadorReservado?.agrupadorId}</p>
+                                                        <p>{item?.agrupadorReservado?.tpAgrupamento}</p>
+                                                        {!!item?.agrupadorReservado?.dtAgrupador && <p>{formatarData(item?.agrupadorReservado?.dtAgrupador, "data")}</p>}
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
+                                                <Tabela.Body.Linha.Coluna>
+                                                    <div>
+                                                        <p>Lado: {item.nrLado}</p>
+                                                        <p>X: {item.nrPosicaoX}</p>
+                                                        <p>Y: {item.nrPosicaoY}</p>
                                                     </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
-                                                    {item.nrLado}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna alignText="text-center">
-                                                    {item.fgStatus}
+                                                    {item.fgStatus?.descricao}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">

@@ -14,18 +14,17 @@ import PaginacaoTabela from "../../components/PaginacaoTabela";
 import Tabela from "../../components/Tabela";
 import Box, { BoxContainer } from "../../components/Box";
 
-import Modaltransportadora from "./modal";
-
 import { deleteTransportadora, getListTransportadora } from "../../services/transportadora";
-import { TransportadoraFiltrosListagem, TransportadoraListagem } from "../../types/transportadora.d";
+import { transportadoraFiltrosListagem, transportadoraListagem } from "../../types/transportadora.d";
+import { useNavigate } from "react-router-dom";
 
 export default function transportadora(): JSX.Element {
     const toast = useToastLoading();
+    const navigate = useNavigate();
 
-    const [listatransportadora, setListatransportadora] = useState<Array<TransportadoraListagem>>([]);
+    const [listatransportadora, setListatransportadora] = useState<Array<transportadoraListagem>>([]);
     const [confirmacaoDeletar, setConfirmacaoDeletar] = useState<boolean>(false);
-    const [transportadoraSelecionado, settransportadoraSelecionado] = useState<TransportadoraListagem | null>(null);
-    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [transportadoraSelecionado, settransportadoraSelecionado] = useState<transportadoraListagem | null>(null);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [loadingListagem, setLoadingListagem] = useState<boolean>(true);
@@ -35,7 +34,7 @@ export default function transportadora(): JSX.Element {
     const [totalPaginas, setTotalPaginas] = useState<number>(0);
     const registrosPorPagina: number = 10;
 
-    const { watch, register, handleSubmit } = useForm<TransportadoraFiltrosListagem>();
+    const { watch, register, handleSubmit } = useForm<transportadoraFiltrosListagem>();
     const hookFiltroWatch = watch();
 
     useEffect(() => {
@@ -51,7 +50,7 @@ export default function transportadora(): JSX.Element {
         pageSize: number = registrosPorPagina,
         currentPage: number = 0
     ): Promise<void> => {
-        let filtros: TransportadoraFiltrosListagem = {
+        let filtros: transportadoraFiltrosListagem = {
             pageSize,
             currentPage
         };
@@ -76,7 +75,6 @@ export default function transportadora(): JSX.Element {
             toast({ tipo: response.tipo, mensagem: response.mensagem });
         }
 
-        setOpenModal(false);
         setLoading(false);
         setLoadingListagem(false);
     };
@@ -85,15 +83,15 @@ export default function transportadora(): JSX.Element {
 
     function handleNovotransportadora(): void {
         settransportadoraSelecionado(null);
-        setOpenModal(true);
+        navigate("form")
     }
 
-    function handleEditartransportadora(dados: TransportadoraListagem): void {
+    function handleEditartransportadora(dados: transportadoraListagem): void {
         settransportadoraSelecionado({ ...dados });
-        setOpenModal(true);
+        navigate(`form/${dados.transportadoraId}`);
     }
 
-    function handledeleteTransportadora(dados: TransportadoraListagem): void {
+    function handledeleteTransportadora(dados: transportadoraListagem): void {
         settransportadoraSelecionado({ ...dados });
         setConfirmacaoDeletar(true);
     }
@@ -104,7 +102,7 @@ export default function transportadora(): JSX.Element {
 
         toast({ mensagem: "Deletando transportadora" });
 
-        const response = await deleteTransportadora(transportadoraSelecionado.transportadoraId.toString());
+        const response = await deleteTransportadora(transportadoraSelecionado.transportadoraId);
 
         if (response.sucesso) {
             carregatransportadora(registrosPorPagina, listatransportadora?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
@@ -183,7 +181,7 @@ export default function transportadora(): JSX.Element {
                                 </Tabela.Header>
 
                                 <Tabela.Body>
-                                    {listatransportadora.map((item: TransportadoraListagem) => {
+                                    {listatransportadora.map((item: transportadoraListagem) => {
                                         return (
                                             <Tabela.Body.Linha key={item.id}>
                                                 <Tabela.Body.Linha.Coluna>
@@ -262,14 +260,6 @@ export default function transportadora(): JSX.Element {
                     <Modal.BotaoCancelar />
                 </Modal.ContainerBotoes>
             </Modal>
-
-            <Modaltransportadora
-                open={openModal}
-                setOpen={setOpenModal}
-                TransportadoraSelecionado={transportadoraSelecionado}
-                setTransportadoraSelecionado={settransportadoraSelecionado}
-                carregaTransportadoras={carregatransportadora}
-            />
         </>
     );
 }

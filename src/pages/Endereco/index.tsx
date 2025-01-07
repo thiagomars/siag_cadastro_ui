@@ -217,7 +217,7 @@ export default function Endereco(): JSX.Element {
                                                 </Tabela.Body.Linha.Coluna>
                                                 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
-                                                    {item.fgStatus}
+                                                    {item.fgStatus?.descricao}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">

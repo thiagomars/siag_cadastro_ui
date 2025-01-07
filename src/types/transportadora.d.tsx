@@ -1,6 +1,6 @@
 import { baseEntity, baseFiltros } from "./baseEntity.d";
 
-export type TransportadoraListagem = {
+export type transportadoraListagem = {
     transportadoraId: number;
     nmNomeEmpresa: string;
     nmNomeReduzido: string;
@@ -22,7 +22,7 @@ export type TransportadoraListagem = {
     usuarioUltimaAlteracao: string;
 } & baseEntity;
 
-export type TransportadoraCadastro = {
+export type transportadoraCadastro = {
     transportadoraId: number;
     nmNomeEmpresa: string;
     nmNomeReduzido: string;
@@ -41,7 +41,7 @@ export type TransportadoraCadastro = {
     emails: string;
 }
 
-export type TransportadoraForm = {
+export type transportadoraForm = {
     transportadoraId: number;
     nmNomeEmpresa: string;
     nmNomeReduzido: string;
@@ -60,10 +60,10 @@ export type TransportadoraForm = {
     emails: string;
 }
 
-export type TransportadoraFiltrosListagem = {
+export type transportadoraFiltrosListagem = {
     pesquisa?: string;
 } & baseFiltros;
 
-export type TransportadoraFiltroSelect = {
+export type transportadoraFiltroSelect = {
     pesquisa?: string | null;
 }

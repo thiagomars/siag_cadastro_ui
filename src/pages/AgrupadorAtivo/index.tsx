@@ -19,6 +19,8 @@ import ModalAgrupadorAtivo from "./modal";
 import { deleteAgrupadorAtivo, getListAgrupadorAtivo } from "../../services/agrupadorAtivo";
 import { agrupadorAtivoFiltrosListagem, agrupadorAtivoListagem } from "../../types/agrupadorAtivo.d";
 import { formatarData } from "../../utils/data";
+import { Fa1, Fa2, Fa3, FaCalendarDay, FaLayerGroup } from "react-icons/fa6";
+import Tag from "../../components/Tag";
 
 export default function AgrupadorAtivo(): JSX.Element {
     const toast = useToastLoading();
@@ -173,11 +175,9 @@ export default function AgrupadorAtivo(): JSX.Element {
                                 }
                             >
                                 <Tabela.Header>
-                                    <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Agrupador</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>ID/Agrupador</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Código</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Sequência</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Data Agrupador</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna>Armazenagem</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Status</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
@@ -188,18 +188,33 @@ export default function AgrupadorAtivo(): JSX.Element {
                                         return (
                                             <Tabela.Body.Linha key={item.agrupadorId}>
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.agrupadorId}
+                                                    <p className="font-medium mb-1.5">
+                                                        {item.agrupadorId}
+                                                    </p>
+                                                    <p className="flex flex-row w-fit gap-0.5 items-center">
+                                                        <FaLayerGroup /> Agrupador: {item.tpAgrupamento}
+                                                    </p>
+                                                    <p className="flex flex-row w-fit gap-0.5 items-center">
+                                                        <FaCalendarDay /> Data: {!!item.dtAgrupador
+                                                            ? formatarData(new Date(item.dtAgrupador), "data")
+                                                            : "Não informado"}
+                                                    </p>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.tpAgrupamento}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    <div>
-                                                        <p>Setor: {item?.codigo1}</p>
-                                                        <p>Setor: {item?.codigo2}</p>
-                                                        <p>Setor: {item?.codigo3}</p>
+                                                    <div className="flex flex-col gap-1">
+                                                        <p>
+                                                            <Tag status="success" className="flex flex-row items-center mr-1"><Fa1 />:</Tag>
+                                                            {item?.codigo1}
+                                                        </p>
+                                                        <p>
+                                                            <Tag status="alert" className="flex flex-row items-center mr-1"><Fa2 />:</Tag>
+                                                            {item?.codigo2}
+                                                        </p>
+                                                        <p>
+                                                            <Tag status="modifed" className="flex flex-row items-center mr-1"><Fa3 />:</Tag>
+                                                            {item?.codigo3}
+                                                        </p>
                                                     </div>
                                                 </Tabela.Body.Linha.Coluna>
 
@@ -207,16 +222,12 @@ export default function AgrupadorAtivo(): JSX.Element {
                                                     {item?.cdSequencia}
                                                 </Tabela.Body.Linha.Coluna>
 
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {formatarData(item.dtAgrupador)}
-                                                </Tabela.Body.Linha.Coluna>
-
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     {item.areaArmazenagemId}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
-                                                    {item.fgStatus}
+                                                    {item.fgStatus?.descricao}
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">

@@ -18,6 +18,8 @@ import ModalPrograma from "./modal";
 
 import { deletePrograma, getListPrograma } from "../../services/programa";
 import { ProgramaFiltrosListagem, ProgramaListagem } from "../../types/programa.d";
+import { formatarData } from "../../utils/data";
+import { FaCalendarDays } from "react-icons/fa6";
 
 export default function Programa(): JSX.Element {
     const toast = useToastLoading();
@@ -173,12 +175,11 @@ export default function Programa(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Programa</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Documento</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Fábrica</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Estabelecimento</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Equipamento</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Deposito</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Programa e Documento</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Depósito e Tipo</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Fábrica e Estabelecimento</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Data de Liberação e Equipamento</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Caixa</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
@@ -191,27 +192,39 @@ export default function Programa(): JSX.Element {
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.cdPrograma}
+                                                    <div>
+                                                        <p>Programa: {item.cdPrograma}</p>
+                                                        <p>Documento: {item.cdDocumento}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.cdDocumento}
+                                                    <div>
+                                                        <p className="flex flex-row items-center gap-1">Depósito: {item.cdDeposito}</p>
+                                                        <p>Tipo: {item.fgTipo}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.cdFabrica}
+                                                    <div>
+                                                        <p>Fábrica: {item.cdFabrica}</p>
+                                                        <p>Estabelecimento: {item.cdEstabelecimento}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.cdEstabelecimento}
+                                                    <div>
+                                                        <p className="flex flex-row items-center gap-0.5"><FaCalendarDays />{formatarData(item.dtLiberacao, "data")}</p>
+                                                        <p>Equipamento: {item.cdEquipamento}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
                                                 <Tabela.Body.Linha.Coluna>
-                                                    {item.cdEquipamento}
-                                                </Tabela.Body.Linha.Coluna>
-
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.cdDeposito}
+                                                    <div>
+                                                        <p>Largura: {item.qtLarguraCaixa}</p>
+                                                        <p>Comprimento: {item.qtComprimentoCaixa}</p>
+                                                        <p>Altura: {item.qtAlturaCaixa}</p>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
                                                 
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">

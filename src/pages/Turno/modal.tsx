@@ -21,7 +21,7 @@ export default function ModalTurno(props: Props) {
 
     const [id, setId] = useState("");
     const [salvandoTurno, setSalvandoTurno] = useState<boolean>(false);
-    const { register: TurnoRegister, handleSubmit: TurnoSubmit, reset: TurnoReset } = useForm<TurnoCadastro>();
+    const { handleSubmit: TurnoSubmit, reset: TurnoReset, control: TurnoControl, getValues } = useForm<TurnoCadastro>();
     const toast = useToastLoading();
     const [alteracoes, setAlteracoes] = useState<baseAlteracoes | null>();
 
@@ -47,7 +47,10 @@ export default function ModalTurno(props: Props) {
 
         let dados: TurnoCadastro;
 
-        await TurnoSubmit((dadosForm) => dados = { ...dadosForm })();
+        await TurnoSubmit((dadosForm) => dados = {
+            ...dadosForm,
+            ...getValues()
+        })();
 
         const request = !!id ? () => putTurno(dados) : () => postTurnos(dados);
 
@@ -84,7 +87,7 @@ export default function ModalTurno(props: Props) {
         if (open)
             toast({ mensagem: "Carregando dados para edição" });
 
-        const response = await getTurnoById(id.toString());
+        const response = await getTurnoById(Number(id));
 
         if (response.sucesso) {
             setId(id.toString());
@@ -122,50 +125,50 @@ export default function ModalTurno(props: Props) {
             {...(alteracoes as baseAlteracoes)}
         >
             <Formulario className="col-span-2 grid grid-cols-2">
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="cdTurno"
                     label="Turno"
-                    type="number"
                     disabled={salvandoTurno}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={TurnoRegister}
+                    className="col-span-2"
+                    control={TurnoControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputHorario
                     name="dtInicio"
                     label="Data início"
                     type="date"
                     disabled={salvandoTurno}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={TurnoRegister}
+                    className="col-span-2"
+                    control={TurnoControl}
                 />
-                <Formulario.InputTexto
+                <Formulario.InputHorario
                     name="dtFim"
                     label="Data fim"
                     type="date"
                     disabled={salvandoTurno}
                     opcional={false}
                     className="col-span-2 mb-2"
-                    register={TurnoRegister}
+                    control={TurnoControl}
                 />
-                <Formulario.InputTexto
+                <Formulario.InputCheckBox
                     name="diaAnterior"
                     label="Dia anterior"
                     type="checkbox"
                     disabled={salvandoTurno}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={TurnoRegister}
+                    className="col-span-2"
+                    control={TurnoControl}
                 />
-                <Formulario.InputTexto
+                <Formulario.InputCheckBox
                     name="diaSucessor"
                     label="Dia sucessor"
                     type="checkbox"
                     disabled={salvandoTurno}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={TurnoRegister}
+                    className="col-span-2"
+                    control={TurnoControl}
                 />
 
             </Formulario>

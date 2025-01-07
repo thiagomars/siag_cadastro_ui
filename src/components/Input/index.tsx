@@ -22,6 +22,7 @@ import verificaPlacaVeiculoValida from "../../utils/verificaPlacaVeiculo";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Tooltip from "../Tooltip";
+import { formatarData, formatarHorarioApi } from "../../utils/data";
 
 type propsField = {
     children?: Array<JSX.Element> | JSX.Element;
@@ -196,9 +197,11 @@ Formulario.InputMes = (props: propsField & propsInput) => {
 }
 
 Formulario.InputHorario = (props: propsField & propsInput) => {
-    const { register } = props;
+    const { control } = props;
     const { ...propsField }: propsField = props;
     const { ...propsInput }: propsInput = props;
+
+    const { field: { value: value, onChange: onChange } } = useController({ name: propsField.name, control, defaultValue: 0 });
 
     return (
         <Formulario.Field {...propsField}>
@@ -213,9 +216,15 @@ Formulario.InputHorario = (props: propsField & propsInput) => {
                     placeholder={propsInput.placeholder}
                     onKeyDown={propsInput.onKeyDown && propsInput.onKeyDown}
                     className={`${propsField.icone || propsInput.copyClipboard ? (propsInput.copyClipboard ? "rounded-l-md border-r-0" : "rounded-r-md") : "rounded-md"} w-full border border-gray-300 shadow-sm py-2 px-3 disabled:bg-gray-100 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-transparent`}
-                    {...register && register(propsField.name)}
+                    value={formatarData(value, "hora")}
                     onChange={e => {
-                        register && register(propsField.name).onChange(e);
+                        const valorTime = e.target.value;
+                        const [hora, minuto] = valorTime.split(':');
+                        
+                        const data = new Date();
+                        data.setHours(Number(hora), Number(minuto), 0, 0);
+
+                        onChange(formatarHorarioApi(data))
                     }}
                     onPaste={(event) => {
                         !!propsInput.lockedPaste && event.preventDefault();

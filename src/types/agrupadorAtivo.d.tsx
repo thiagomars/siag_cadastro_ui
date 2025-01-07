@@ -1,6 +1,6 @@
 import { areaArmazenagemListagem } from "./areaArmazenagem.d";
 import { baseFiltros } from "./baseEntity.d";
-import { typeSelectOptions } from "./select.d";
+import { typeSelectOptions, typeSelectResponse } from "./select.d";
 
 export type agrupadorAtivoListagem = {
     agrupadorId: number;
@@ -12,7 +12,7 @@ export type agrupadorAtivoListagem = {
     dtAgrupador: Date;
     areaArmazenagemId: number;
     areaArmazenagem: areaArmazenagemListagem;
-    fgStatus: number;
+    fgStatus: typeSelectResponse;
 };
 
 export type agrupadorAtivoCadastro = {
@@ -24,7 +24,7 @@ export type agrupadorAtivoCadastro = {
     cdSequencia: number;
     dtAgrupador: Date;
     areaArmazenagemId: number;
-    fgStatus: number;
+    fgStatus: typeSelectOptions;
 }
 
 export type agrupadorAtivoForm = {

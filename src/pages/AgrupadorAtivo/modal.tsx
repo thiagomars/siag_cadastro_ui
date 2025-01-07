@@ -9,6 +9,8 @@ import { baseAlteracoes } from "../../types/baseEntity.d";
 import { agrupadorAtivoCadastro, agrupadorAtivoListagem } from "../../types/agrupadorAtivo.d";
 import { Fa1, Fa2, Fa3, FaBuffer, FaCube } from "react-icons/fa6";
 import SelectAreaArmazenagem from "../../templates/selects/AreaArmazenagemSelect";
+import SelectStatusAgrupadorAtivo from "../../templates/selects/StatusAgrupadorAtivoSelect";
+import { typeSelectOptions } from "../../types/select.d";
 
 type Props = {
     open: boolean;
@@ -49,7 +51,10 @@ export default function ModalAgrupadorAtivo(props: Props) {
 
         let dados: agrupadorAtivoCadastro;
 
-        await AgrupadorAtivoSubmit((dadosForm) => dados = { ...dadosForm })();
+        await AgrupadorAtivoSubmit((dadosForm) => dados = {
+            ...dadosForm,
+            fgStatus: (dadosForm.fgStatus as typeSelectOptions)?.value
+        })();
 
         const request = id > 0 ? () => putAgrupadorAtivo(dados) : () => postAgrupadorAtivos(dados);
 
@@ -78,7 +83,7 @@ export default function ModalAgrupadorAtivo(props: Props) {
         setId(0);
         AgrupadorAtivoReset({
             agrupadorId: 0,
-            fgStatus: 0,
+            fgStatus: { },
             areaArmazenagemId: 0,
             cdSequencia: 0,
             codigo1: "",
@@ -103,8 +108,12 @@ export default function ModalAgrupadorAtivo(props: Props) {
                 ...response.dados,
                 areaArmazenagem: {
                     value: response.dados?.areaArmazenagem?.areaArmazenagemId,
-                    label: response.dados?.areaArmazenagem?.areaArmazenagemId + " - " + response.dados?.areaArmazenagem?.nmAreaArmazenagem
+                    label: response.dados?.areaArmazenagem?.areaArmazenagemIdc + " - " + response.dados?.areaArmazenagem?.nmAreaArmazenagem
                 },
+                fgStatus: {
+                    value: response.dados?.fgStatus?.id,
+                    label: response.dados?.fgStatus?.descricao
+                }
             });
         } else {
             toast({
@@ -208,15 +217,15 @@ export default function ModalAgrupadorAtivo(props: Props) {
                     />
                 </SelectAreaArmazenagem>
 
-                <Formulario.InputNumber
-                    name="fgStatus"
-                    label="Status"
-                    disabled={salvandoAgrupadorAtivo}
-                    opcional={false}
-                    control={AgrupadorAtivoControl}
-                    decimalPlaces={0}
-                    className="lg:col-span-2"
-                />
+                <SelectStatusAgrupadorAtivo>
+                    <SelectStatusAgrupadorAtivo.Single
+                        control={AgrupadorAtivoControl}
+                        disabled={salvandoAgrupadorAtivo}
+                        opcional={false}
+                        className="lg:col-span-2"
+                        name="fgStatus"
+                    />
+                </SelectStatusAgrupadorAtivo>
             </Formulario>
         </ModalLateral>
     );

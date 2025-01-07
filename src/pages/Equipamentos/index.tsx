@@ -15,7 +15,7 @@ import EmptyPage from "../../components/EmptyPage";
 import Botao from "../../components/Button";
 import { desligarLuzesVerdes, desligarLuzesVermelhas, ligarLuzesVermelhas } from "../../services/luzes";
 
-export function Equipamentos(): JSX.Element {
+export default function Equipamentos() {
     const toast = useToastLoading();
 
     const [loading, setLoading] = useState(true);

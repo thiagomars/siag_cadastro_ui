@@ -4,7 +4,7 @@ export type TurnoListagem = {
     turnoId: number;
     cdTurno: string;
     dtInicio: Date;
-    dt_fim: Date;
+    dtFim: Date;
     diaAnterior: boolean;
     diaSucessor: boolean;
 
@@ -15,8 +15,8 @@ export type TurnoListagem = {
 export type TurnoCadastro = {
     turnoId: number;
     cdTurno: string;
-    dtInicio: Date;
-    dt_fim: Date;
+    dtInicio: Date | string;
+    dt_fim: Date | string;
     diaAnterior: boolean;
     diaSucessor: boolean;
 }

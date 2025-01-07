@@ -21,7 +21,7 @@ export default function ModalPrograma(props: Props) {
 
     const [id, setId] = useState("");
     const [salvandoPrograma, setSalvandoPrograma] = useState<boolean>(false);
-    const { register: ProgramaRegister, handleSubmit: ProgramaSubmit, reset: ProgramaReset } = useForm<ProgramaCadastro>();
+    const { register: ProgramaRegister, handleSubmit: ProgramaSubmit, reset: ProgramaReset, control: ProgramaControl } = useForm<ProgramaCadastro>();
     const toast = useToastLoading();
     const [alteracoes, setAlteracoes] = useState<baseAlteracoes | null>();
 
@@ -47,7 +47,10 @@ export default function ModalPrograma(props: Props) {
 
         let dados: ProgramaCadastro;
 
-        await ProgramaSubmit((dadosForm) => dados = { ...dadosForm })();
+        await ProgramaSubmit((dadosForm) => dados = {
+            ...dadosForm,
+            cdEquipamento: dadosForm.cdEquipamento.toString()
+        })();
 
         const request = !!id ? () => putPrograma(dados) : () => postProgramas(dados);
 
@@ -129,107 +132,97 @@ export default function ModalPrograma(props: Props) {
             id={id}
             {...(alteracoes as baseAlteracoes)}
         >
-            <Formulario className="col-span-2 grid grid-cols-2">
-                <Formulario.InputTexto
+            <Formulario className="lg:grid-cols-2">
+                <Formulario.InputNumber
                     name="cdPrograma"
                     label="Programa"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    className="lg:col-span-2"
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="cdDocumento"
                     label="Documento"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    className="lg:col-span-2"
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="cdFabrica"
                     label="Fábrica"
                     type="text"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="cdEstabelecimento"
                     label="Estabelecimento"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="cdEquipamento"
                     label="Equipamento"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="fgTipo"
                     label="Tipo"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
                 <Formulario.InputTexto
                     name="cdDeposito"
                     label="Depósito"
-                    type="text"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
+                    className="lg:col-span-2"
                     register={ProgramaRegister}
                 />
-                <Formulario.InputTexto
-                    name="qtAlturaCaixa"
-                    label="Altura caixa"
-                    type="number"
-                    disabled={salvandoPrograma}
-                    opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
-                />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="qtLarguraCaixa"
                     label="Largura caixa"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
                     name="qtComprimentoCaixa"
                     label="Comprimento caixa"
-                    type="number"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
+                    align="text-left"
                 />
-                <Formulario.InputTexto
+                <Formulario.InputNumber
+                    name="qtAlturaCaixa"
+                    label="Altura caixa"
+                    disabled={salvandoPrograma}
+                    opcional={false}
+                    control={ProgramaControl}
+                    align="text-left"
+                />
+                <Formulario.InputData
                     name="dtLiberacao"
                     label="Data liberação"
-                    type="date"
                     disabled={salvandoPrograma}
                     opcional={false}
-                    className="col-span-2 mb-2"
-                    register={ProgramaRegister}
+                    control={ProgramaControl}
                 />
-
             </Formulario>
         </ModalLateral>
     );

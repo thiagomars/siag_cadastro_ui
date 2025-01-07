@@ -18,6 +18,9 @@ import Modalturno from "./modal";
 
 import { deleteTurno, getListTurno } from "../../services/turno";
 import { TurnoFiltrosListagem, TurnoListagem } from "../../types/turno.d";
+import Tag from "../../components/Tag";
+import { formatarData } from "../../utils/data";
+import { FaClock } from "react-icons/fa6";
 
 export default function turno(): JSX.Element {
     const toast = useToastLoading();
@@ -104,7 +107,7 @@ export default function turno(): JSX.Element {
 
         toast({ mensagem: "Deletando turno" });
 
-        const response = await deleteTurno(turnoSelecionado.turnoId.toString());
+        const response = await deleteTurno(turnoSelecionado.turnoId);
 
         if (response.sucesso) {
             carregaturno(registrosPorPagina, listaturno?.length == 1 && paginaAtual > 0 ? paginaAtual - 1 : paginaAtual);
@@ -173,7 +176,9 @@ export default function turno(): JSX.Element {
                             >
                                 <Tabela.Header>
                                     <Tabela.Header.Coluna>#</Tabela.Header.Coluna>
-                                    <Tabela.Header.Coluna>Código do turno</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna>Código</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Horário</Tabela.Header.Coluna>
+                                    <Tabela.Header.Coluna alignText="text-center">Dia Anterior/Sucessor</Tabela.Header.Coluna>
                                     <Tabela.Header.Coluna alignText="text-center">Ações</Tabela.Header.Coluna>
                                 </Tabela.Header>
 
@@ -189,22 +194,21 @@ export default function turno(): JSX.Element {
                                                     {item.cdTurno}
                                                 </Tabela.Body.Linha.Coluna>
 
-                                                {/* <Tabela.Body.Linha.Coluna>
-                                                    {item.dtInicio}
-                                                </Tabela.Body.Linha.Coluna> */}
-
-                                                {/* <Tabela.Body.Linha.Coluna>
-                                                    {item.dt_fim.toString()}
-                                                </Tabela.Body.Linha.Coluna> */}
-
-                                                {/* <Tabela.Body.Linha.Coluna>
-                                                    {item.diaAnterior}
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    <div className="flex flex-col items-center gap-1.5">
+                                                        <Tag status="success" className="flex flex-row items-center gap-0.5"><FaClock />Início: {formatarData(item.dtInicio, "hora")}</Tag>
+                                                        <Tag status="error" className="flex flex-row items-center gap-0.5"><FaClock />Fim: {formatarData(item.dtFim, "hora")}</Tag>
+                                                    </div>
                                                 </Tabela.Body.Linha.Coluna>
 
-                                                <Tabela.Body.Linha.Coluna>
-                                                    {item.diaSucessor}
-                                                </Tabela.Body.Linha.Coluna> */}
-                                                
+                                                <Tabela.Body.Linha.Coluna alignText="text-center">
+                                                    <div className="flex flex-col items-center gap-1.5">
+                                                        {!!item.diaAnterior && <Tag status="alert" className="flex flex-row items-center gap-0.5">{"Dia anterior"}</Tag>}
+                                                        {!!item.diaSucessor && <Tag status="destaque" className="flex flex-row items-center gap-0.5">{"Dia sucessor"}</Tag>}
+                                                        {!item.diaAnterior && !item.diaSucessor && "-"}
+                                                    </div>
+                                                </Tabela.Body.Linha.Coluna>
+
                                                 <Tabela.Body.Linha.Coluna alignText="text-center">
                                                     <MenuDropdown>
                                                         <MenuDropdown.Opcao tipo="editar" ativo={true} acaoBotao={() => handleEditarturno(item)} />

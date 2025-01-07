@@ -11,6 +11,8 @@ import { FaBuffer } from "react-icons/fa6";
 import SelectTipoArea from "../../templates/selects/TipoAreaSelect";
 import SelectEndereco from "../../templates/selects/EnderecoSelect";
 import SelectAgrupador from "../../templates/selects/AgrupadorSelect";
+import SelectStatusAreaArmazenagem from "../../templates/selects/StatusAreaArmazenagemSelect";
+import { typeSelectOptions } from "../../types/select.d";
 
 type Props = {
     open: boolean;
@@ -31,7 +33,7 @@ export default function ModalAreaArmazenagem(props: Props) {
 
     useEffect(() => {
         if (areaArmazenagemSelecionado != null) {
-            carregaAreaArmazenagemsPorId(areaArmazenagemSelecionado.agrupadorId);
+            carregaAreaArmazenagemsPorId(areaArmazenagemSelecionado.areaArmazenagemId);
         }
     }, [areaArmazenagemSelecionado]);
 
@@ -51,7 +53,10 @@ export default function ModalAreaArmazenagem(props: Props) {
 
         let dados: areaArmazenagemCadastro;
 
-        await AreaArmazenagemSubmit((dadosForm) => dados = { ...dadosForm })();
+        await AreaArmazenagemSubmit((dadosForm) => dados = {
+            ...dadosForm,
+            fgStatus: (dadosForm.fgStatus as typeSelectOptions)?.value,
+        })();
 
         const request = id > 0 ? () => putAreaArmazenagem(dados) : () => postAreaArmazenagems(dados);
 
@@ -84,7 +89,7 @@ export default function ModalAreaArmazenagem(props: Props) {
             areaArmazenagemId: 0,
             cdIdentificacao: "",
             enderecoId: 0,
-            fgStatus: 0,
+            fgStatus: { },
             nrLado: 0,
             nrPosicaoX: 0,
             nrPosicaoY: 0,
@@ -110,17 +115,25 @@ export default function ModalAreaArmazenagem(props: Props) {
                     label: response.dados?.areaArmazenagem?.areaArmazenagemId + " - " + response.dados?.areaArmazenagem?.nmAreaArmazenagem
                 },
                 agrupador: {
-                    value: response.dados?.agrupador?.agrupadorId,
-                    label: response.dados?.agrupador?.agrupadorId + " - " + response.dados?.agrupador?.nmAgrupador
+                    value: response.dados?.agrupadorAtivo?.agrupadorId,
+                    label: "Agrupamento: " + response.dados?.agrupadorAtivo?.tpAgrupamento + " - Sequência: " + response.dados?.agrupadorAtivo?.cdSequencia
                 },
                 agrupadorReservado: {
-                    value: response.dados?.agrupadorReservado?.agrupadorReservadoId,
-                    label: response.dados?.agrupadorReservado?.agrupadorReservadoId + " - " + response.dados?.agrupadorReservado?.nmAgrupadorReservado
+                    value: response.dados?.agrupadorReservado?.agrupadorId,
+                    label: "Agrupamento: " + response.dados?.agrupadorReservado?.tpAgrupamento + " - Sequência: " + response.dados?.agrupadorReservado?.cdSequencia
                 },
                 endereco: {
                     value: response.dados?.endereco?.enderecoId,
                     label: response.dados?.endereco?.enderecoId + " - " + response.dados?.endereco?.nmEndereco
                 },
+                fgStatus: {
+                    value: response.dados?.fgStatus?.id,
+                    label: response.dados?.fgStatus?.descricao
+                },
+                tipoArea: {
+                    value: response.dados?.tipoArea?.tipoAreaId,
+                    label: response.dados?.tipoArea?.nmTipoArea
+                }
             });
         } else {
             toast({
@@ -176,6 +189,8 @@ export default function ModalAreaArmazenagem(props: Props) {
                         disabled={salvandoAreaArmazenagem}
                         opcional={false}
                         className="lg:col-span-2"
+                        name="agrupador"
+                        label="Agrupador ativo"
                     />
                 </SelectAgrupador>
 
@@ -215,15 +230,15 @@ export default function ModalAreaArmazenagem(props: Props) {
                     icone={<FaBuffer className="fill-gray-600" />}
                 />
 
-                <Formulario.InputNumber
-                    name="fgStatus"
-                    label="Status"
-                    disabled={salvandoAreaArmazenagem}
-                    opcional={false}
-                    control={AreaArmazenagemControl}
-                    decimalPlaces={0}
-                    className="lg:col-span-2"
-                />
+                <SelectStatusAreaArmazenagem>
+                    <SelectStatusAreaArmazenagem.Single
+                        name="fgStatus"
+                        control={AreaArmazenagemControl}
+                        disabled={salvandoAreaArmazenagem}
+                        opcional={false}
+                        className="lg:col-span-2"
+                    />
+                </SelectStatusAreaArmazenagem>
 
                 <Formulario.InputTexto
                     name="cdIdentificacao"
@@ -242,6 +257,7 @@ export default function ModalAreaArmazenagem(props: Props) {
                         disabled={salvandoAreaArmazenagem}
                         opcional={false}
                         className="lg:col-span-2"
+                        label="Agrupador reservado"
                     />
                 </SelectAgrupador>
             </Formulario>

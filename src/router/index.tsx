@@ -1,17 +1,7 @@
 import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LayoutDashboard from "../layout/LayoutDashboard";
-import { Equipamentos } from "../pages/Equipamentos";
-import Operador from "../pages/Operador";
-import Parametro from "../pages/Parametro";
-import Turno from "../pages/Turno";
-import Transportadora from "../pages/Transportadora";
-import Programa from "../pages/Programa";
-// import routesImpressoes from "./impressoes";
 
-const NotFound: React.LazyExoticComponent<any> = lazy(
-    () => import("../templates/pages/NotFound")
-);
 const Uf: React.LazyExoticComponent<any> = lazy(() => import("../pages/Uf"));
 const Pallet: React.LazyExoticComponent<any> = lazy(() => import("../pages/Pallet"));
 const Deposito: React.LazyExoticComponent<any> = lazy(() => import("../pages/Deposito"));
@@ -24,8 +14,15 @@ const AgrupadorAtivo: React.LazyExoticComponent<any> = lazy(() => import("../pag
 const AreaArmazenagem: React.LazyExoticComponent<any> = lazy(() => import("../pages/AreaArmazenagem"));
 const Caixa: React.LazyExoticComponent<any> = lazy(() => import("../pages/Caixa"));
 const CaixaForm: React.LazyExoticComponent<any> = lazy(() => import("../pages/Caixa/form"));
-const Atividade: React.LazyExoticComponent<any> = lazy(() => import("../pages/Atividade"));
-const AtividadeForm: React.LazyExoticComponent<any> = lazy(() => import("../pages/Atividade/form"));
+const Operador: React.LazyExoticComponent<any> = lazy(() => import("../pages/Operador"));
+const Equipamentos: React.LazyExoticComponent<any> = lazy(() => import("../pages/Equipamentos"));
+const Parametro: React.LazyExoticComponent<any> = lazy(() => import("../pages/Parametro"));
+const Turno: React.LazyExoticComponent<any> = lazy(() => import("../pages/Turno"));
+const Transportadora: React.LazyExoticComponent<any> = lazy(() => import("../pages/Transportadora"));
+const TransportadoraForm: React.LazyExoticComponent<any> = lazy(() => import("../pages/Transportadora/form"));
+const Programa: React.LazyExoticComponent<any> = lazy(() => import("../pages/Programa"));
+
+const NotFound: React.LazyExoticComponent<any> = lazy(() => import("../templates/pages/NotFound"));
 
 function Router(): JSX.Element {
     const router = createBrowserRouter([
@@ -110,6 +107,11 @@ function Router(): JSX.Element {
                     errorElement: <NotFound />
                 },
                 {
+                    path: "transportadora/form/:id?",
+                    element: <TransportadoraForm />,
+                    errorElement: <NotFound />
+                },
+                {
                     path: "programa",
                     element: <Programa />,
                     errorElement: <NotFound />
@@ -122,16 +124,6 @@ function Router(): JSX.Element {
                 {
                     path: "caixa/form/:id?",
                     element: <CaixaForm />,
-                    errorElement: <NotFound />
-                },
-                {
-                    path: "atividade",
-                    element: <Atividade />,
-                    errorElement: <NotFound />
-                },
-                {
-                    path: "atividade/form/:id?",
-                    element: <AtividadeForm />,
                     errorElement: <NotFound />
                 },
             ]

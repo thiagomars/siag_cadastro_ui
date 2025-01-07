@@ -142,7 +142,7 @@ export default function ModalPallet(props: Props) {
                     type="text"
                     disabled={salvandoPallet}
                     opcional={false}
-                    className="col-span-2 mb-2"
+                    className="col-span-2"
                     register={PalletRegister}
                 />
                 <Formulario.InputTexto
@@ -151,7 +151,7 @@ export default function ModalPallet(props: Props) {
                     type="text"
                     disabled={salvandoPallet}
                     opcional={false}
-                    className="col-span-2 mb-2"
+                    className="col-span-2"
                     register={PalletRegister}
                 />
 

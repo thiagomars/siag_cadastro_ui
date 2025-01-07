@@ -1,6 +1,6 @@
 import { baseFiltros } from "./baseEntity.d";
 import { regiaoTrabalhoListagem } from "./regiaoTrabalho.d";
-import { typeSelectOptions } from "./select.d";
+import { typeSelectOptions, typeSelectResponse } from "./select.d";
 import { setorTrabalhoListagem } from "./setorTrabalho.d";
 import { tipoEnderecoListagem } from "./tipoEndereco.d";
 
@@ -15,7 +15,7 @@ export type enderecoListagem = {
     nmEndereco: string;
     qtEstoqueMinimo: number;
     qtEstoqueMaximo: number;
-    fgStatus: number;
+    fgStatus: typeSelectResponse;
     tpPreenchimento: number;
 };
 
