@@ -161,10 +161,10 @@ export default function Equipamentos() {
                                                 (<>
                                                     <Box className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 place-items-center gap-4 w-full">
                                                         <Box.Header>
-                                                            <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0].caracol}</h1>
+                                                            <h1 className="font-semibold text-primary-900 text-xl">Caracol: {(index + 1) * 100 + listaGaiolas[0]?.caracol}</h1>
                                                         </Box.Header>
                                                         {
-                                                            listaGaiolas.map(gaiola => (
+                                                            listaGaiolas?.map(gaiola => (
                                                                 <StatusAgrupador
                                                                     key={`${gaiola.caracol}-${gaiola.gaiola}`}
                                                                     color={gaiola.cor}
